@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourWebApp", "WebShopApp\TourWebApp.csproj", "{70CCCD60-5B19-48C3-AA4B-064DD901AD14}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourWebApp.Infrastructure", "WebShopApp.Infrastructure\TourWebApp.Infrastructure.csproj", "{45C07E46-785E-4EAF-A599-1E6FBBA7346B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{70CCCD60-5B19-48C3-AA4B-064DD901AD14}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{70CCCD60-5B19-48C3-AA4B-064DD901AD14}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{70CCCD60-5B19-48C3-AA4B-064DD901AD14}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{70CCCD60-5B19-48C3-AA4B-064DD901AD14}.Release|Any CPU.Build.0 = Release|Any CPU
+		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {60D4D811-EE9A-4747-B073-971418FE6B24}
+	EndGlobalSection
+EndGlobal
