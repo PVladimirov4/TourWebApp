@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 using TourWebApp.Infrastructure.Data;
+using TourWebApp.Infrastructure.Data.Entities;
 
 namespace TourWebApp
 {
@@ -17,7 +18,7 @@ namespace TourWebApp
                 options.UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-            builder.Services.AddDefaultIdentity<IdentityUser>(options =>
+            builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
             {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;
@@ -27,9 +28,6 @@ namespace TourWebApp
                 options.Password.RequiredLength = 5;
             })
             
-
-            
-
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
 
