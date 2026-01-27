@@ -1,8 +1,11 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
+using TourWebApp.Core.Contracts;
+using TourWebApp.Core.Services;
 using TourWebApp.Infrastructure.Data;
 using TourWebApp.Infrastructure.Data.Entities;
+using TourWebApp.Infrastructure.Data.Infrastructure;
 
 namespace TourWebApp
 {
@@ -15,7 +18,7 @@ namespace TourWebApp
             // Add services to the container.
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(connectionString));
+               options.UseLazyLoadingProxies().UseSqlServer(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<ApplicationUser>(options =>
@@ -27,11 +30,15 @@ namespace TourWebApp
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 5;
             })
-            
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
 
+            builder.Services.AddTransient<ICategoryService, CategoryService>();
+            builder.Services.AddTransient<IBrandService, BrandService>();
+
             var app = builder.Build();
+            app.PrepareDatabase();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())

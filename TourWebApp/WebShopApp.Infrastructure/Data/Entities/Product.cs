@@ -27,6 +27,8 @@ namespace TourWebApp.Infrastructure.Data.Entities
 
         public string Picture { get; set; } = null!;
 
+        public string Description { get; set; } = null!;
+
         [Range(0, 5000)]
         public int Quantity { get; set; }
 

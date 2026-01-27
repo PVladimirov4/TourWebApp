@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36310.24 d17.14
+VisualStudioVersion = 17.14.36310.24
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourWebApp", "WebShopApp\TourWebApp.csproj", "{70CCCD60-5B19-48C3-AA4B-064DD901AD14}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourWebApp.Infrastructure", "WebShopApp.Infrastructure\TourWebApp.Infrastructure.csproj", "{45C07E46-785E-4EAF-A599-1E6FBBA7346B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TourWebApp.Core", "TourWebApp.Core\TourWebApp.Core.csproj", "{52DE0488-867A-4326-AB3B-26CA9BA10D85}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{45C07E46-785E-4EAF-A599-1E6FBBA7346B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52DE0488-867A-4326-AB3B-26CA9BA10D85}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52DE0488-867A-4326-AB3B-26CA9BA10D85}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52DE0488-867A-4326-AB3B-26CA9BA10D85}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52DE0488-867A-4326-AB3B-26CA9BA10D85}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
