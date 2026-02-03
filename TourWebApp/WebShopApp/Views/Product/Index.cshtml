@@ -3,9 +3,13 @@
     ViewData["Title"] = "Index";
 }
 <h1>Index</h1>
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+
+@if ((this.User.Identity.IsAuthenticated) && (this.User.IsInRole("Administrator")))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
 <form asp-controller="Product" asp-action="Index" method="get">
     <p>
         Brand: <input type="text" name="SearchStringBrandName" />
@@ -20,17 +24,10 @@
                 @Html.DisplayNameFor(model => model.ProductName)
             </th>
 
-            
-
-            @*<th>
-@Html.DisplayNameFor(model => model.BrandId)
-</th>*@
             <th>
                 @Html.DisplayNameFor(model => model.BrandName)
             </th>
-            @*<th>
-@Html.DisplayNameFor(model => model.CategoryId)
-</th>*@
+            
             <th>
                 @Html.DisplayNameFor(model => model.CategoryName)
             </th>
@@ -58,15 +55,10 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.ProductName)
                 </td>
-                @*<td>
-@Html.DisplayFor(modelItem => item.BrandId)
-</td>*@
+               
                 <td>
                     @Html.DisplayFor(modelItem => item.BrandName)
                 </td>
-                @*<td>
-@Html.DisplayFor(modelItem => item.CategoryId)
-</td>*@
                 <td>
                     @Html.DisplayFor(modelItem => item.CategoryName)
                 </td>
@@ -89,16 +81,20 @@
                 </td>
                 <td>
 
-                    
 
-                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-
-    warning">Edit</a>
+                    @if ((this.User.Identity.IsAuthenticated) && (this.User.IsInRole("Administrator")))
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-
+            warning">Edit</a>
+                    }                
 
                     <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-
-    success">Details</a>
-
-                    <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-
-    danger">Delete</a>
+     success">Details</a>
+                    @if ((this.User.Identity.IsAuthenticated) && (this.User.IsInRole("Administrator")))
+                    {
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-
+            danger">Delete</a>
+                    }                 
 
                 </td>
             </tr>

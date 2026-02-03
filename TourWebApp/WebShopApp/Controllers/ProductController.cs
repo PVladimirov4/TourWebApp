@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using TourWebApp.Core.Contracts;
@@ -9,6 +10,7 @@ using TourWebApp.Models.Product;
 
 namespace TourWebApp.Controllers
 {
+    [Authorize(Roles = "Administrator")]
     public class ProductController : Controller
     {
         private readonly IProductService _productService;
@@ -23,6 +25,7 @@ namespace TourWebApp.Controllers
         }
 
         // GET: ProductController
+        [AllowAnonymous]
         public ActionResult Index(string searchStringCategoryName, string searchStringBrandName)
         {
             List<ProductIndexVM> products = _productService.GetProducts(searchStringCategoryName, searchStringBrandName)
@@ -46,9 +49,32 @@ namespace TourWebApp.Controllers
         }
 
         // GET: ProductController/Details/5
+        [AllowAnonymous]
         public ActionResult Details(int id)
         {
-            return View();
+            var item = _productService.GetProductById(id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            var product = new ProductDetailsVM
+            {
+                Id = item.Id,
+                ProductName = item.ProductName,
+                BrandId = item.BrandId,
+                BrandName = item.Brand.BrandName,
+                CategoryId = item.CategoryId,
+                CategoryName = item.Category.CategoryName,
+                Picture = item.Picture,
+                Quantity = item.Quantity,
+                Price = item.Price,
+                Discount = item.Discount,
+                Description = item.Description
+            };
+
+            return View(product);
         }
 
         // GET: ProductController/Create
@@ -141,7 +167,7 @@ namespace TourWebApp.Controllers
             {
                 var updated = _productService.Update(id, product.ProductName, product.BrandId,
                     product.CategoryId, product.Picture,
-                    product.Quantity, product.Price, product.Discount);
+                    product.Quantity, product.Price, product.Discount, product.Description);
 
                 if (updated)
                 {
@@ -155,7 +181,29 @@ namespace TourWebApp.Controllers
         // GET: ProductController/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            Product item = _productService.GetProductById(id);
+
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            ProductDeleteVM product = new ProductDeleteVM()
+            {
+                Id = item.Id,
+                ProductName = item.ProductName,
+                BrandId = item.BrandId,
+                BrandName = item.Brand.BrandName,
+                CategoryId = item.CategoryId,
+                CategoryName = item.Category.CategoryName,
+                Picture = item.Picture,
+                Quantity = item.Quantity,
+                Price = item.Price,
+                Discount = item.Discount,
+                Description = item.Description
+            };
+
+            return View(product);
         }
 
         // POST: ProductController/Delete/5
@@ -163,14 +211,21 @@ namespace TourWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
-            try
+           var deleted = _productService.RemoveById(id);
+
+            if (deleted)
             {
-                return RedirectToAction(nameof(Index));
+                return this.RedirectToAction("Success");
             }
-            catch
+            else
             {
                 return View();
             }
+
+        }
+        public IActionResult Success()
+        {
+            return View();
         }
     }
 }
