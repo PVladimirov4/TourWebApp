@@ -46,5 +46,15 @@ namespace TourWebApp.Core.Services
 
             return _context.SaveChanges() != 0;
         }
+
+        public List<Order> GetOrders()
+        {
+            return _context.Orders.OrderByDescending(x=>x.OrderDate).ToList();
+        }
+        public List<Order> GetOrdersByUser(string userId) 
+        {
+            return _context.Orders.Where(x=>x.UserId == userId).OrderByDescending(x => x.OrderDate).ToList();
+        }
+
     }
 }
