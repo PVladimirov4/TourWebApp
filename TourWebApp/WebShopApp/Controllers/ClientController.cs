@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 using System.Threading.Tasks;
 
+using TourWebApp.Core.Contracts;
+using TourWebApp.Core.Services;
 using TourWebApp.Infrastructure.Data.Entities;
 using TourWebApp.Models.Client;
 
@@ -12,10 +14,12 @@ namespace TourWebApp.Controllers
     public class ClientController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly IOrderService _orderService;
 
-        public ClientController(UserManager<ApplicationUser> userManager)
+        public ClientController(UserManager<ApplicationUser> userManager, IOrderService orderService)
         {
             this._userManager = userManager;
+            this._orderService = orderService;
         }
         // GET: ClientController
         public async Task<ActionResult> Index()
@@ -23,17 +27,17 @@ namespace TourWebApp.Controllers
             var allUsers = this._userManager.Users
              .Select(u => new ClientIndexVM
              {
-              Id = u.Id,
-              UserName = u.UserName,
-              FirstName = u.FirstName,
-              LastName = u.LastName,
-              Address = u.Address,
-              Email = u.Email,
+                 Id = u.Id,
+                 UserName = u.UserName,
+                 FirstName = u.FirstName,
+                 LastName = u.LastName,
+                 Address = u.Address,
+                 Email = u.Email,
              })
              .ToList();
 
             // Id на всички администратори
-           var adminIds = (await _userManager.GetUsersInRoleAsync("Aministrator")).Select(a => a.Id).ToList();
+            var adminIds = (await _userManager.GetUsersInRoleAsync("Aministrator")).Select(a => a.Id).ToList();
 
             // Ако потребителят е в списъка, то IsAdmin става true
             foreach (var user in allUsers)
@@ -106,7 +110,11 @@ namespace TourWebApp.Controllers
             {
                 return NotFound();
             }
-
+            var orders = _orderService.GetOrdersByUser(id);
+            if(orders.Count > 0)
+            {
+                return RedirectToAction("DeleteError");
+            }
             ClientDeleteVM userToDelete = new ClientDeleteVM()
             {
                 Id = user.Id,
@@ -139,6 +147,10 @@ namespace TourWebApp.Controllers
             return NotFound();
         }
         public ActionResult Success()
+        {
+            return View();
+        }
+        public ActionResult DeleteError()
         {
             return View();
         }

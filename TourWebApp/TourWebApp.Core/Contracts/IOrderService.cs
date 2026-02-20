@@ -21,5 +21,6 @@ namespace TourWebApp.Core.Contracts
         bool RemoveById(int orderId);
 
         bool Update(int orderId, int productId, string userId, int quantity);
+
     }
 }
