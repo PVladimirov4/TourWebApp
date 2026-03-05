@@ -17,9 +17,9 @@ namespace TourWebApp.Infrastructure.Data.Entities
         public string ProductName { get; set; } = null!;
 
         [Required]
-        public int BrandId { get; set; }
+        public int CountryId { get; set; }
 
-        public virtual Brand Brand { get; set; } = null!;
+        public virtual Country Country { get; set; } = null!;
 
         public int CategoryId { get; set; }
 

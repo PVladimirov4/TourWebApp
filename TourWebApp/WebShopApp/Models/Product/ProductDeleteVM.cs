@@ -10,10 +10,10 @@ namespace TourWebApp.Models.Product
         [Display(Name = "Product Name")]
         public string ProductName { get; set; } = null!;
 
-        [Display(Name = "Brand")]
-        public int BrandId { get; set; }
+        [Display(Name = "country")]
+        public int CountryId { get; set; }
 
-        public string BrandName { get; set; } = null!;
+        public string CountryName { get; set; } = null!;
 
         [Display(Name = "Category")]
         public int CategoryId { get; set; }

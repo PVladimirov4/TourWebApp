@@ -3980,7 +3980,7 @@ textarea.form-control-lg {
   align-items: center;
   justify-content: space-between;
 }
-.navbar-brand {
+.navbar-country {
   padding-top: 0.3125rem;
   padding-bottom: 0.3125rem;
   margin-left: 1rem;
@@ -4369,10 +4369,10 @@ textarea.form-control-lg {
   overflow-y: visible;
 }
 
-.navbar-light .navbar-brand {
+.navbar-light .navbar-country {
   color: rgba(0, 0, 0, 0.9);
 }
-.navbar-light .navbar-brand:hover, .navbar-light .navbar-brand:focus {
+.navbar-light .navbar-country:hover, .navbar-light .navbar-country:focus {
   color: rgba(0, 0, 0, 0.9);
 }
 .navbar-light .navbar-nav .nav-link {
@@ -4404,10 +4404,10 @@ textarea.form-control-lg {
   color: rgba(0, 0, 0, 0.9);
 }
 
-.navbar-dark .navbar-brand {
+.navbar-dark .navbar-country {
   color: #fff;
 }
-.navbar-dark .navbar-brand:hover, .navbar-dark .navbar-brand:focus {
+.navbar-dark .navbar-country:hover, .navbar-dark .navbar-country:focus {
   color: #fff;
 }
 .navbar-dark .navbar-nav .nav-link {

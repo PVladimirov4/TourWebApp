@@ -35,7 +35,7 @@ namespace TourWebApp
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddTransient<ICategoryService, CategoryService>();
-            builder.Services.AddTransient<IBrandService, BrandService>();
+            builder.Services.AddTransient<ICountryService, CountryService>();
             builder.Services.AddTransient<IProductService, ProductService>();
             builder.Services.AddTransient<IOrderService, OrderService>();
 

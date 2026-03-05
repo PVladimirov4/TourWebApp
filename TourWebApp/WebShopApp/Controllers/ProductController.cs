@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 using TourWebApp.Core.Contracts;
 using TourWebApp.Infrastructure.Data.Entities;
-using TourWebApp.Models.Brand;
+using TourWebApp.Models.country;
 using TourWebApp.Models.Category;
 using TourWebApp.Models.Product;
+using TourWebApp.Core.Services;
 
 namespace TourWebApp.Controllers
 {
@@ -15,26 +15,26 @@ namespace TourWebApp.Controllers
     {
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
-        private readonly IBrandService _brandService;
+        private readonly ICountryService _countryService;
 
-        public ProductController(IProductService productService, ICategoryService categoryService, IBrandService brandService)
+        public ProductController(IProductService productService, ICategoryService categoryService, ICountryService countryService)
         {
             this._productService = productService;
             this._categoryService = categoryService;
-            this._brandService = brandService;
+            this._countryService = countryService;
         }
 
         // GET: ProductController
         [AllowAnonymous]
-        public ActionResult Index(string searchStringCategoryName, string searchStringBrandName)
+        public ActionResult Index(string searchStringCategoryName, string searchStringCountryName)
         {
-            List<ProductIndexVM> products = _productService.GetProducts(searchStringCategoryName, searchStringBrandName)
+            List<ProductIndexVM> products = _productService.GetProducts(searchStringCategoryName, searchStringCountryName)
      .Select(product => new ProductIndexVM
      {
          Id = product.Id,
          ProductName = product.ProductName,
-         BrandId = product.BrandId,
-         BrandName = product.Brand.BrandName,
+         CountryId = product.CountryId,
+         CountryName = product.Country.CountryName,
          CategoryId = product.CategoryId,
          CategoryName = product.Category.CategoryName,
          Picture = product.Picture,
@@ -63,8 +63,8 @@ namespace TourWebApp.Controllers
             {
                 Id = item.Id,
                 ProductName = item.ProductName,
-                BrandId = item.BrandId,
-                BrandName = item.Brand.BrandName,
+                CountryId = item.CountryId,
+                CountryName = item.Country.CountryName,
                 CategoryId = item.CategoryId,
                 CategoryName = item.Category.CategoryName,
                 Picture = item.Picture,
@@ -82,11 +82,11 @@ namespace TourWebApp.Controllers
         {
             var product = new ProductCreateVM();
 
-            product.Brands = _brandService.GetBrands()
-                .Select(x => new BrandPairVM()
+            product.Countrys = _countryService.GetCountrys()
+                .Select(x => new CountryPairVM()
                 {
                     Id = x.Id,
-                    Name = x.BrandName
+                    Name = x.CountryName
                 }).ToList();
 
             product.Categories = _categoryService.GetCategories()
@@ -106,7 +106,7 @@ namespace TourWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var createdId = _productService.Create(product.ProductName, product.BrandId, product.CategoryId, product.Picture, product.Quantity, product.Price, product.Discount, product.Description);
+                var createdId = _productService.Create(product.ProductName, product.CountryId, product.CategoryId, product.Picture, product.Quantity, product.Price, product.Discount, product.Description);
 
                 if (createdId)
                 {
@@ -130,8 +130,8 @@ namespace TourWebApp.Controllers
             {
                 Id = product.Id,
                 ProductName = product.ProductName,
-                BrandId = product.BrandId,
-                //BrandName = product.Brand.BrandName,
+                CountryId = product.CountryId,
+                //countryName = product.country.countryName,
                 CategoryId = product.CategoryId,
                 // CategoryName = product.Category.CategoryName,
                 Picture = product.Picture,
@@ -139,12 +139,12 @@ namespace TourWebApp.Controllers
                 Price = product.Price,
                 Discount = product.Discount
             };
-            updatedProduct.Brands = _brandService.GetBrands()
-                .Select(b => new BrandPairVM()
+            updatedProduct.Countrys = _countryService.GetCountrys()
+                .Select(b => new CountryPairVM()
                 {
                  Id = b.Id,
-                Name = b.BrandName
-               })
+                Name = b.CountryName
+                })
                   .ToList();
 
             updatedProduct.Categories = _categoryService.GetCategories()
@@ -165,7 +165,7 @@ namespace TourWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var updated = _productService.Update(id, product.ProductName, product.BrandId,
+                var updated = _productService.Update(id, product.ProductName, product.CountryId,
                     product.CategoryId, product.Picture,
                     product.Quantity, product.Price, product.Discount, product.Description);
 
@@ -192,8 +192,8 @@ namespace TourWebApp.Controllers
             {
                 Id = item.Id,
                 ProductName = item.ProductName,
-                BrandId = item.BrandId,
-                BrandName = item.Brand.BrandName,
+                CountryId = item.CountryId,
+                CountryName = item.Country.CountryName,
                 CategoryId = item.CategoryId,
                 CategoryName = item.Category.CategoryName,
                 Picture = item.Picture,

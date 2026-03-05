@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-using TourWebApp.Models.Brand;
+using TourWebApp.Models.country;
 using TourWebApp.Models.Category;
 
 namespace TourWebApp.Models.Product
@@ -16,9 +16,9 @@ namespace TourWebApp.Models.Product
         public string ProductName { get; set; } = null!;
 
         [Required]
-        [Display(Name = "Brand")]
-        public int BrandId { get; set; }
-        public virtual List<BrandPairVM> Brands { get; set; } = new List<BrandPairVM>();
+        [Display(Name = "Country")]
+        public int CountryId { get; set; }
+        public virtual List<CountryPairVM> Countrys { get; set; } = new List<CountryPairVM>();
 
         [Required]
         [Display(Name = "Category")]

@@ -16,16 +16,16 @@
                 <span asp-validation-for="ProductName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="BrandId" class="control-label"></label>            
+                <label asp-for="CountryId" class="control-label"></label>            
 
-                @*<input asp-for="BrandId" class="form-control" />*@
-                <select asp-for="BrandId" class="form-control text-center">
-                    @foreach (var brand in Model.Brands)
+                @*<input asp-for="countryId" class="form-control" />*@
+                <select asp-for="CountryId" class="form-control text-center">
+                    @foreach (var country in Model.Countrys)
                     {
-                        <option value=" @brand.Id">@brand.Name</option>
+                        <option value=" @country.Id">@country.Name</option>
                     }
                 </select>
-                <span asp-validation-for="BrandId" class="text-danger"></span>
+                <span asp-validation-for="CountryId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CategoryId" class="control-label"></label>

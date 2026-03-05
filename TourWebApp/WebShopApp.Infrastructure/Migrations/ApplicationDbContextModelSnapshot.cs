@@ -242,24 +242,6 @@ namespace TourWebApp.Infrastructure.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Brand", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("BrandName")
-                        .IsRequired()
-                        .HasMaxLength(30)
-                        .HasColumnType("nvarchar(30)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Brands");
-                });
-
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -276,6 +258,24 @@ namespace TourWebApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
+                });
+
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Country", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("CountryName")
+                        .IsRequired()
+                        .HasMaxLength(30)
+                        .HasColumnType("nvarchar(30)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Countrys");
                 });
 
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Order", b =>
@@ -323,10 +323,10 @@ namespace TourWebApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("BrandId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("CategoryId")
+                    b.Property<int>("CountryId")
                         .HasColumnType("int");
 
                     b.Property<string>("Description")
@@ -352,9 +352,9 @@ namespace TourWebApp.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BrandId");
-
                     b.HasIndex("CategoryId");
+
+                    b.HasIndex("CountryId");
 
                     b.ToTable("Products");
                 });
@@ -431,29 +431,29 @@ namespace TourWebApp.Infrastructure.Migrations
 
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Product", b =>
                 {
-                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Brand", "Brand")
-                        .WithMany("Products")
-                        .HasForeignKey("BrandId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("TourWebApp.Infrastructure.Data.Entities.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Brand");
+                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Country", "Country")
+                        .WithMany("Products")
+                        .HasForeignKey("CountryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("Category");
+
+                    b.Navigation("Country");
                 });
 
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Brand", b =>
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Category", b =>
                 {
                     b.Navigation("Products");
                 });
 
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Category", b =>
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Country", b =>
                 {
                     b.Navigation("Products");
                 });

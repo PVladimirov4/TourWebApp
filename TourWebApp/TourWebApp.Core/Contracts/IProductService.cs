@@ -10,9 +10,9 @@ namespace TourWebApp.Core.Contracts
 {
     public interface IProductService
     {
-        bool Create(string name, int brandId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description);
+        bool Create(string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description);
 
-        bool Update(int productId, string name, int brandId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description);
+        bool Update(int productId, string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description);
 
         List<Product> GetProducts();
 
@@ -20,7 +20,7 @@ namespace TourWebApp.Core.Contracts
 
         bool RemoveById(int dogproductId);
 
-        List<Product> GetProducts(string searchStringCategoryName, string searchStringBrandName);
+        List<Product> GetProducts(string searchStringCategoryName, string searchStringCountryName);
        
     }
 }

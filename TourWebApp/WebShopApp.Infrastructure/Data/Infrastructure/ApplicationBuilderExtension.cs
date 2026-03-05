@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -24,8 +25,8 @@ namespace TourWebApp.Infrastructure.Data.Infrastructure
 
             var dataCategory = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
             SeedCategories(dataCategory);
-            var dataBrand = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();        
-            SeedBrands(dataBrand);
+            var dataCountry = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+            SeedCountrys(dataCountry);
 
             return app;
         }
@@ -91,25 +92,25 @@ namespace TourWebApp.Infrastructure.Data.Infrastructure
 
             dataCategory.SaveChanges();
         }
-        private static void SeedBrands(ApplicationDbContext dataBrand)
+        private static void SeedCountrys(ApplicationDbContext dataCountry)
         {
-            if (dataBrand.Brands.Any())
+            if (dataCountry.Countrys.Any())
             {
                 return;
             }
 
-            dataBrand.Brands.AddRange(new[]
+            dataCountry.Countrys.AddRange(new[]
             {
-               new Brand {BrandName="Acer" },
-               new Brand {BrandName="Asus"},
-               new Brand {BrandName="Apple"},
-               new Brand {BrandName="Dell"},
-               new Brand {BrandName="HP"},
-               new Brand {BrandName="Huawei"},
-               new Brand {BrandName="SamSung"},
+               new Country {CountryName="Acer" },
+               new Country {CountryName="Asus"},
+               new Country {CountryName="Apple"},
+               new Country {CountryName="Dell"},
+               new Country { CountryName = "HP"},
+               new Country { CountryName = "Huawei"},
+               new Country { CountryName = "SamSung"},
             });
 
-            dataBrand.SaveChanges();
+            dataCountry.SaveChanges();
         }
     }
 }

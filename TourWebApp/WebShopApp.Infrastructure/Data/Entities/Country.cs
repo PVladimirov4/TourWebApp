@@ -9,13 +9,13 @@ using Unipluss.Sign.ExternalContract.Entities;
 
 namespace TourWebApp.Infrastructure.Data.Entities
 {
-    public class Brand
+    public class Country
     {
         public int Id { get; set; }
         [Required]
         [MaxLength(30)]
 
-        public string BrandName { get; set; } = null!;
+        public string CountryName { get; set; } = null!;
         public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
     }
 }

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TourWebApp.Models.Brand
+namespace TourWebApp.Models.country
 {
-    public class BrandPairVM
+    public class CountryPairVM
     {
         public int Id { get; set; }
 
-        [Display(Name = "Brand")]
+        [Display(Name = "Country")]
         public string Name { get; set; } = null!;
     }
 }

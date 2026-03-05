@@ -8,10 +8,10 @@ using TourWebApp.Infrastructure.Data.Entities;
 
 namespace TourWebApp.Core.Contracts
 {
-    public interface IBrandService
+    public interface ICountryService
     {
-        List<Brand> GetBrands();
-        Brand GetBrandById(int brandId);
-        List<Product> GetProductsByBrand(int brandId);
+        List<Country> GetCountrys();
+        Country GetCountryById(int countryId);
+        List<Country> GetProductsByCountry(int countryId);
     }
 }
