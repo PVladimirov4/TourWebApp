@@ -12,8 +12,8 @@ using TourWebApp.Infrastructure.Data;
 namespace TourWebApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260302091729_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260306125846_first")]
+    partial class first
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
