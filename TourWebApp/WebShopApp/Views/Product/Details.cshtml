@@ -1,64 +1,166 @@
 ﻿@model TourWebApp.Models.Product.ProductDetailsVM
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Tour Details";
 }
-<h1>Details</h1>
-<div>
-    <h4>ProductDetailsVM</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.ProductName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.ProductName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CountryName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CountryName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.CategoryName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.CategoryName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Picture)
-        </dt>
-        <dd class="col-sm-10">
-            <img src="@Html.DisplayFor(model => model.Picture)" alt="Image"
-                 width="100" />
-            @*@Html.DisplayFor(model => model.Picture)*@
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Quantity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Quantity)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Discount)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Discount)
-         
 
-        </dd>
-    </dl>
+<style>
+    .details-container {
+        background: white;
+        border-radius: 20px;
+        overflow: hidden;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        margin-top: 30px;
+    }
+
+    .details-img {
+        width: 100%;
+        height: 100%;
+        min-height: 450px;
+        object-fit: cover;
+    }
+
+    .info-section {
+        padding: 40px;
+    }
+
+    .tour-title {
+        font-weight: 800;
+        color: #2c3e50;
+        margin-bottom: 10px;
+    }
+
+    .location-badge {
+        background: #eef2f7;
+        color: #5d6d7e;
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-bottom: 20px;
+    }
+
+    .price-card {
+        background: #f8f9fa;
+        border-radius: 15px;
+        padding: 20px;
+        margin: 25px 0;
+    }
+
+    .label-text {
+        text-uppercase;
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #abb2b9;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .value-text {
+        font-size: 1.1rem;
+        color: #2c3e50;
+        font-weight: 600;
+    }
+
+    .btn-book {
+        background: #ffc107;
+        color: #000;
+        font-weight: 700;
+        padding: 12px 30px;
+        border-radius: 10px;
+        transition: 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+        .btn-book:hover {
+            background: #e5ac00;
+            transform: translateY(-2px);
+        }
+
+    .back-link {
+        color: #7f8c8d;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+        .back-link:hover {
+            color: #2c3e50;
+        }
+</style>
+
+<div class="container py-5">
+    <div class="mb-3">
+        <a asp-action="Index" class="back-link small fw-bold">
+            <i class="bi bi-arrow-left"></i> BACK TO ALL TOURS
+        </a>
+    </div>
+
+    <div class="details-container">
+        <div class="row g-0">
+            <div class="col-lg-6">
+                <img src="@Model.Picture" class="details-img" alt="@Model.ProductName">
+            </div>
+
+            <div class="col-lg-6 d-flex flex-column justify-content-center">
+                <div class="info-section">
+                    <span class="location-badge">
+                        <i class="bi bi-geo-alt-fill text-primary"></i> @Model.CountryName
+                    </span>
+
+                    <h1 class="tour-title">@Model.ProductName</h1>
+                    <p class="text-muted">Explore the beauty of @Model.CountryName with our professional guides. Experience a unique @Model.CategoryName journey.</p>
+
+                    <div class="price-card">
+                        <div class="row text-center text-md-start">
+                            <div class="col-md-4 mb-3 mb-md-0">
+                                <span class="label-text">PRICE</span>
+                                <span class="value-text h3 text-primary mb-0">@Model.Price USD</span>
+                            </div>
+                            <div class="col-md-4 mb-3 mb-md-0 border-start border-end">
+                                <span class="label-text">DISCOUNT</span>
+                                <span class="value-text">@Model.Discount% OFF</span>
+                            </div>
+                            <div class="col-md-4">
+                                <span class="label-text">AVAILABILITY</span>
+                                <span class="value-text @(Model.Quantity > 0 ? "text-success" : "text-danger")">
+                                    @Model.Quantity Seats left
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-action="Create" asp-controller="Order" asp-route-id="@Model.Id" class="btn btn-book btn-lg px-5 border-0 shadow-sm">
+                                Book This Tour Now
+                            </a>
+                        }
+
+                        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Administrator"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-lg px-4">
+                                Edit Tour
+                            </a>
+                        }
+                    </div>
+
+                    <div class="mt-4 pt-3 border-top">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <span class="small text-muted">Free cancellation up to 48 hours</span>
+                        </div>
+                        <div class="d-flex align-items-center mt-2">
+                            <i class="bi bi-check-circle-fill text-success me-2"></i>
+                            <span class="small text-muted">Secure booking & payment</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

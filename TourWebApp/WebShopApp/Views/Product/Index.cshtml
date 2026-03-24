@@ -1,107 +1,197 @@
 ﻿@model IEnumerable<TourWebApp.Models.Product.ProductIndexVM>
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Всички Екскурзии";
 }
-<h1>Index</h1>
 
-@if ((this.User.Identity.IsAuthenticated) && (this.User.IsInRole("Administrator")))
-{
-    <p>
-        <a asp-action="Create">Create New</a>
-    </p>
-}
-<form asp-controller="Product" asp-action="Index" method="get">
-    <p>
-        country: <input type="text" name="SearchStringcountryName" />
-        Category: <input type="text" name="SearchStringCategoryName" />
-        <input type="submit" value="Filter" />
-    </p>
-</form>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.ProductName)
-            </th>
+<style>
+    :root {
+        --travel-blue: #0056b3;
+        --travel-gold: #ffc107;
+        --light-bg: #f4f7f6;
+    }
 
-            <th>
-                @Html.DisplayNameFor(model => model.CountryName)
-            </th>
-            
-            <th>
-                @Html.DisplayNameFor(model => model.CategoryName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Picture)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Quantity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Price)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Discount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+    body {
+        background-color: var(--light-bg);
+    }
+
+    /* Филтър бар - изчистен и хоризонтален */
+    .filter-bar {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        padding: 20px;
+        margin-bottom: 40px;
+    }
+
+    /* Карта на екскурзията */
+    .tour-card {
+        border: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        background: white;
+        height: 100%;
+    }
+
+        .tour-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+    .image-container {
+        position: relative;
+        height: 200px;
+        overflow: hidden;
+        border-radius: 12px 12px 0 0;
+    }
+
+    .tour-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Етикети върху снимката */
+    .badge-duration {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(255, 255, 255, 0.9);
+        color: #333;
+        padding: 5px 12px;
+        border-radius: 20px;
+        font-weight: 600;
+        font-size: 0.8rem;
+    }
+
+    .badge-discount {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #ff4757;
+        color: white;
+        padding: 5px 10px;
+        border-radius: 8px;
+        font-weight: bold;
+    }
+
+    .price-box {
+        border-top: 1px solid #eee;
+        padding-top: 15px;
+        margin-top: 15px;
+    }
+
+    .btn-reserve {
+        background-color: var(--travel-gold);
+        color: #000;
+        font-weight: 700;
+        border: none;
+        transition: 0.2s;
+    }
+
+        .btn-reserve:hover {
+            background-color: #e5ac00;
+        }
+
+    .admin-panel {
+        background: #fdf2f2;
+        border-radius: 0 0 12px 12px;
+        padding: 10px;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">Каталог Екскурзии</h2>
+        <p class="text-muted">Намери своето следващо приключение според държавата и времето, с което разполагаш</p>
+    </div>
+
+    <div class="filter-bar">
+        <form asp-controller="Product" asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-lg-4 col-md-6">
+                <label class="form-label fw-semibold">Избери Държава</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-geo-alt"></i></span>
+                    <input type="text" name="SearchStringcountryName" class="form-control border-start-0" placeholder="Напр. Турция, Италия..." />
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <label class="form-label fw-semibold">Времетраене (Категория)</label>
+                <div class="input-group">
+                    <span class="input-group-text bg-white border-end-0"><i class="bi bi-clock"></i></span>
+                    <input type="text" name="SearchStringCategoryName" class="form-control border-start-0" placeholder="Еднодневна, Тридневна..." />
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <button type="submit" class="btn btn-primary w-100">Филтрирай</button>
+            </div>
+            <div class="col-lg-2 col-md-6">
+                <a asp-action="Index" class="btn btn-outline-secondary w-100">Изчисти</a>
+            </div>
+        </form>
+    </div>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
+    {
+        <div class="mb-4">
+            <a asp-action="Create" class="btn btn-success shadow-sm rounded-pill px-4">
+                + Добави Нов Продукт
+            </a>
+        </div>
+    }
+
+    <div class="row g-4">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductName)
-                </td>
-               
-                <td>
-                    @Html.DisplayFor(modelItem => item.CountryName)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CategoryName)
-                </td>
-                <td>
-                    <img src="@Html.DisplayFor(modelItem => item.Picture)"
-                         alt="Image" width="100" />
-                    @*@Html.DisplayFor(modelItem => item.Pictute)*@
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Quantity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Discount) %
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
+            <div class="col-xl-3 col-lg-4 col-md-6">
+                <div class="card tour-card shadow-sm h-100">
+                    <div class="image-container">
+                        <img src="@item.Picture" class="tour-img" alt="@item.ProductName">
+                        <span class="badge-duration shadow-sm">
+                            <i class="bi bi-calendar3"></i> @item.CategoryName
+                        </span>
+                        @if (item.Discount > 0)
+                        {
+                            <span class="badge-discount">-@item.Discount%</span>
+                        }
+                    </div>
 
+                    <div class="card-body d-flex flex-column">
+                        <div class="mb-2">
+                            <small class="text-uppercase fw-bold text-primary" style="letter-spacing: 1px;">@item.CountryName</small>
+                            <h5 class="fw-bold mb-1">@item.ProductName</h5>
+                        </div>
 
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-success">Details</a>
+                        <p class="text-muted small mb-3">
+                            @(item.Description.Length > 80 ? item.Description.Substring(0, 80) + "..." : item.Description)
+                        </p>
 
-                    @if (User.Identity?.IsAuthenticated == true)
-                    {
-                        <a asp-action="Create" asp-controller="Order" asp-route-id="@item.Id" class="btn btn-warning">Order</a>
-                    }
+                        <div class="mt-auto price-box d-flex justify-content-between align-items-center">
+                            <div>
+                                <span class="h5 fw-bold mb-0">@item.Price лв.</span>
+                                <p class="text-muted mb-0" style="font-size: 0.7rem;">Места: @item.Quantity</p>
+                            </div>
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark rounded-pill">Детайли</a>
+                        </div>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                            <a asp-action="Create" asp-controller="Order" asp-route-id="@item.Id" class="btn btn-reserve w-100 mt-3">РЕЗЕРВИРАЙ</a>
+                        }
+                    </div>
 
                     @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Administrator"))
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-warning">Edit</a>
-                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger">Delete</a>
+                        <div class="admin-panel d-flex justify-content-around border-top">
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-link btn-sm text-warning p-0">Редакция</a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-link btn-sm text-danger p-0">Изтрий</a>
+                        </div>
                     }
-                </td>
-
-                </td>
-            </tr>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
