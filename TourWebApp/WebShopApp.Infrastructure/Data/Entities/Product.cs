@@ -29,6 +29,10 @@ namespace TourWebApp.Infrastructure.Data.Entities
 
         public string Description { get; set; } = null!;
 
+        public DateTime DepartureTime { get; set; }  // Кога тръгваме
+
+        public DateTime ArrivalDate { get; set; }    // Кога се прибираме
+
         [Range(0, 5000)]
         public int Quantity { get; set; }
 

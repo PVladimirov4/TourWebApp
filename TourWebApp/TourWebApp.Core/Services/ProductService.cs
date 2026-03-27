@@ -14,12 +14,16 @@ namespace TourWebApp.Core.Services
     {
 
         private readonly ApplicationDbContext _context;
+        public List<Country> GetCountrys()
+        {
+            return _context.Countrys.ToList(); // Увери се, че името на таблицата е точно такова
+        }
 
         public ProductService(ApplicationDbContext context)
         {
             _context = context;
         }
-        public bool Create(string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description)
+        public bool Create(string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
         {
             Product item = new Product
             {
@@ -30,7 +34,9 @@ namespace TourWebApp.Core.Services
                 Quantity = quantity,
                 Price = price,
                 Discount = discount,
-                Description = description
+                Description = description,
+                DepartureTime = departureTime,
+                ArrivalDate = arrivalDate
             };
 
             _context.Products.Add(item);
@@ -77,7 +83,7 @@ namespace TourWebApp.Core.Services
             return _context.SaveChanges() != 0;
         }
 
-        public bool Update(int productId, string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description)
+        public bool Update(int productId, string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
         {
             var product = GetProductById(productId);
             if (product == default(Product))
@@ -98,6 +104,8 @@ namespace TourWebApp.Core.Services
             product.Price = price;
             product.Discount = discount;
             product.Description = description;
+            product.DepartureTime = departureTime;
+            product.ArrivalDate = arrivalDate;
 
             _context.Update(product);
             return _context.SaveChanges() != 0;

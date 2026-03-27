@@ -4,165 +4,205 @@
 }
 
 <style>
+    body { background-color: #f8f9fa; }
+
     .details-container {
         background: white;
-        border-radius: 20px;
+        border-radius: 24px;
         overflow: hidden;
-        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-        margin-top: 30px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        margin-top: 20px;
+        border: none;
+    }
+
+    /* Стил за държавата - Голям и забележим */
+    .country-header {
+        font-size: 0.85rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 3px;
+        color: #0d6efd;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .tour-title {
+        font-weight: 800;
+        color: #1a252f;
+        font-size: 2.8rem;
+        line-height: 1.2;
+        margin-bottom: 20px;
     }
 
     .details-img {
         width: 100%;
         height: 100%;
-        min-height: 450px;
+        min-height: 550px;
         object-fit: cover;
+        transition: transform 0.5s ease;
     }
 
-    .info-section {
-        padding: 40px;
+    .details-img:hover {
+        transform: scale(1.02);
     }
 
-    .tour-title {
+    .info-section { padding: 50px; }
+
+    .price-tag {
+        font-size: 2.2rem;
         font-weight: 800;
         color: #2c3e50;
-        margin-bottom: 10px;
     }
 
-    .location-badge {
-        background: #eef2f7;
-        color: #5d6d7e;
-        padding: 5px 15px;
-        border-radius: 50px;
-        font-size: 0.9rem;
-        display: inline-block;
-        margin-bottom: 20px;
-    }
-
-    .price-card {
-        background: #f8f9fa;
-        border-radius: 15px;
-        padding: 20px;
-        margin: 25px 0;
+    .stat-box {
+        background: #f1f4f8;
+        padding: 15px;
+        border-radius: 12px;
+        height: 100%;
     }
 
     .label-text {
-        text-uppercase;
-        font-size: 0.75rem;
+        font-size: 0.7rem;
         font-weight: 700;
-        color: #abb2b9;
+        color: #94a3b8;
+        text-transform: uppercase;
+        letter-spacing: 1px;
         display: block;
-        margin-bottom: 5px;
-    }
-
-    .value-text {
-        font-size: 1.1rem;
-        color: #2c3e50;
-        font-weight: 600;
     }
 
     .btn-book {
         background: #ffc107;
         color: #000;
         font-weight: 700;
-        padding: 12px 30px;
-        border-radius: 10px;
+        padding: 16px 40px;
+        border-radius: 12px;
+        font-size: 1.1rem;
         transition: 0.3s;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        box-shadow: 0 4px 15px rgba(255, 193, 7, 0.3);
     }
 
-        .btn-book:hover {
-            background: #e5ac00;
-            transform: translateY(-2px);
-        }
-
-    .back-link {
-        color: #7f8c8d;
-        text-decoration: none;
-        transition: 0.2s;
+    .btn-book:hover {
+        background: #ffca2c;
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(255, 193, 7, 0.4);
     }
 
-        .back-link:hover {
-            color: #2c3e50;
-        }
+    .description-text {
+        font-size: 1.05rem;
+        line-height: 1.7;
+        color: #475569;
+        border-left: 4px solid #0d6efd;
+        padding-left: 20px;
+        margin: 25px 0;
+    }
 </style>
 
 <div class="container py-5">
-    <div class="mb-3">
-        <a asp-action="Index" class="back-link small fw-bold">
-            <i class="bi bi-arrow-left"></i> BACK TO ALL TOURS
+    <div class="mb-4">
+        <a asp-action="Index" class="text-decoration-none text-secondary fw-bold small">
+            <i class="bi bi-chevron-left"></i> EXPLORE MORE DESTINATIONS
         </a>
     </div>
 
-    <div class="details-container">
+    <div class="details-container shadow">
         <div class="row g-0">
-            <div class="col-lg-6">
+            <div class="col-lg-6 overflow-hidden">
                 <img src="@Model.Picture" class="details-img" alt="@Model.ProductName">
             </div>
 
-            <div class="col-lg-6 d-flex flex-column justify-content-center">
+            <div class="col-lg-6">
                 <div class="info-section">
-                    <span class="location-badge">
-                        <i class="bi bi-geo-alt-fill text-primary"></i> @Model.CountryName
+                    
+                    <span class="country-header">
+                        <i class="bi bi-geo-alt-fill me-1"></i> @Model.CountryName
                     </span>
 
                     <h1 class="tour-title">@Model.ProductName</h1>
-                    <p class="text-muted">Explore the beauty of @Model.CountryName with our professional guides. Experience a unique @Model.CategoryName journey.</p>
+                    
+                    <div class="badge bg-light text-primary border px-3 py-2 rounded-pill mb-4">
+                        <i class="bi bi-tag-fill me-1"></i> @Model.CategoryName
+                    </div>
 
-                    <div class="price-card">
-                        <div class="row text-center text-md-start">
-                            <div class="col-md-4 mb-3 mb-md-0">
-                                <span class="label-text">PRICE</span>
-                                <span class="value-text h3 text-primary mb-0">@Model.Price USD</span>
+                    <p class="description-text italic">
+                        "@Model.Description"
+                    </p>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-6">
+                            <div class="stat-box">
+                                <span class="label-text">Start Date</span>
+                                <span class="fw-bold text-dark text-nowrap">
+                                    <i class="bi bi-calendar-event me-1 text-primary"></i> 
+                                    @Model.DepartureTime.ToString("dd MMM yyyy")
+                                </span>
                             </div>
-                            <div class="col-md-4 mb-3 mb-md-0 border-start border-end">
-                                <span class="label-text">DISCOUNT</span>
-                                <span class="value-text">@Model.Discount% OFF</span>
-                            </div>
-                            <div class="col-md-4">
-                                <span class="label-text">AVAILABILITY</span>
-                                <span class="value-text @(Model.Quantity > 0 ? "text-success" : "text-danger")">
-                                    @Model.Quantity Seats left
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-box">
+                                <span class="label-text">Return Date</span>
+                                <span class="fw-bold text-dark text-nowrap">
+                                    <i class="bi bi-calendar-check me-1 text-success"></i> 
+                                    @Model.ArrivalDate.ToString("dd MMM yyyy")
                                 </span>
                             </div>
                         </div>
                     </div>
 
-                    <div class="d-grid gap-2 d-md-flex justify-content-md-start mt-4">
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <div class="stat-box">
+                                <span class="label-text">Price per person</span>
+                                <span class="price-tag text-primary">$@Model.Price</span>
+                                @if(Model.Discount > 0) {
+                                    <span class="badge bg-danger ms-1 small">-@Model.Discount%</span>
+                                }
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="stat-box d-flex flex-column justify-content-center">
+                                <span class="label-text">Availability</span>
+                                <span class="fw-bold @(Model.Quantity > 0 ? "text-success" : "text-danger")">
+                                    <i class="bi bi-people-fill me-1"></i> @Model.Quantity Slots Left
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-3 mt-5">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <a asp-action="Create" asp-controller="Order" asp-route-id="@Model.Id" class="btn btn-book btn-lg px-5 border-0 shadow-sm">
-                                Book This Tour Now
+                            <a asp-action="Create" asp-controller="Order" asp-route-id="@Model.Id" class="btn btn-book btn-lg border-0 shadow-sm">
+                                BOOK THIS JOURNEY NOW
                             </a>
                         }
 
-                        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Administrator"))
-                        {
-                            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-warning btn-lg px-4">
-                                Edit Tour
-                            </a>
-                        }
+                        <div class="d-flex gap-2">
+                            @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Administrator"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-dark flex-grow-1 py-3 fw-bold rounded-3">
+                                    <i class="bi bi-pencil-square me-2"></i>Edit Tour
+                                </a>
+                            }                           
+                        </div>
                     </div>
 
-                    <div class="mt-4 pt-3 border-top">
-                        <div class="d-flex align-items-center">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>
-                            <span class="small text-muted">Free cancellation up to 48 hours</span>
+                    <div class="mt-5 pt-4 border-top d-flex justify-content-between">
+                        <div class="text-center">
+                            <i class="bi bi-shield-check text-primary h4 mb-1 d-block"></i>
+                            <span class="small text-muted fw-bold" style="font-size: 0.65rem;">SECURE PAY</span>
                         </div>
-                        <div class="d-flex align-items-center mt-2">
-                            <i class="bi bi-check-circle-fill text-success me-2"></i>
-                            <span class="small text-muted">Secure booking & payment</span>
+                        <div class="text-center">
+                            <i class="bi bi-headset text-primary h4 mb-1 d-block"></i>
+                            <span class="small text-muted fw-bold" style="font-size: 0.65rem;">24/7 SUPPORT</span>
+                        </div>
+                        <div class="text-center">
+                            <i class="bi bi-stars text-primary h4 mb-1 d-block"></i>
+                            <span class="small text-muted fw-bold" style="font-size: 0.65rem;">GUIDED TOUR</span>
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-}

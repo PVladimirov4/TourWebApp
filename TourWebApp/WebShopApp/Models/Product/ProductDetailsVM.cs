@@ -23,6 +23,12 @@ namespace TourWebApp.Models.Product
         [Display(Name = "Picture")]
         public string Picture { get; set; } = null;
 
+        [Display(Name = "Дата на тръгване")]
+        public DateTime DepartureTime { get; set; }
+
+        [Display(Name = "Дата на пристигане")]
+        public DateTime ArrivalDate { get; set; }
+
         [Display(Name = "Quantity")]
         public int Quantity { get; set; }
 

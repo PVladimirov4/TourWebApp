@@ -28,6 +28,16 @@ namespace TourWebApp.Models.Product
         [Display(Name = "Picture")]
         public string Picture { get; set; } = null!;
 
+        [Required]
+        [Display(Name = "DepartureTime")]
+        [DataType(DataType.DateTime)]
+        public DateTime DepartureTime { get; set; }
+
+        [Required]       
+        [Display(Name = "ArrivalTime")]
+        [DataType(DataType.DateTime)]
+        public DateTime ArrivalDate { get; set; }
+
         [Range(0, 5000)]
         [Display(Name = "Quantity")]
         public int Quantity { get; set; }

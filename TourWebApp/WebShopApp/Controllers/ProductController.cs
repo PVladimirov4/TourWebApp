@@ -7,44 +7,96 @@ using TourWebApp.Models.country;
 using TourWebApp.Models.Category;
 using TourWebApp.Models.Product;
 using TourWebApp.Core.Services;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
+using TourWebApp.Infrastructure.Data;
 
 namespace TourWebApp.Controllers
 {
     [Authorize(Roles = "Administrator")]
     public class ProductController : Controller
     {
+        
+
+       
+        
+            
+        
         private readonly IProductService _productService;
         private readonly ICategoryService _categoryService;
         private readonly ICountryService _countryService;
+        private readonly ApplicationDbContext _context;
 
-        public ProductController(IProductService productService, ICategoryService categoryService, ICountryService countryService)
+
+        public ProductController(IProductService productService, ICategoryService categoryService, ICountryService countryService, ApplicationDbContext context)
         {
             this._productService = productService;
             this._categoryService = categoryService;
             this._countryService = countryService;
+            _context = context;
         }
 
         // GET: ProductController
         [AllowAnonymous]
-        public ActionResult Index(string searchStringCategoryName, string searchStringCountryName)
+        public ActionResult Index(string searchStringCategoryName, int? countryId, int? categoryId)
         {
-            List<ProductIndexVM> products = _productService.GetProducts(searchStringCategoryName, searchStringCountryName)
-     .Select(product => new ProductIndexVM
-     {
-         Id = product.Id,
-         ProductName = product.ProductName,
-         CountryId = product.CountryId,
-         CountryName = product.Country.CountryName,
-         CategoryId = product.CategoryId,
-         CategoryName = product.Category.CategoryName,
-         Picture = product.Picture,
-         Quantity = product.Quantity,
-         Price = product.Price,
-         Discount = product.Discount,
-         Description = product.Description
-     })
-     .ToList();
+            // 1. Вземаме продуктите (без филтър по име на държава вече)
+            var filteredProducts = _productService.GetProducts(searchStringCategoryName, null);
 
+            // 2. Филтър по Държава (ID)
+            if (countryId.HasValue && countryId.Value > 0)
+            {
+                filteredProducts = filteredProducts.Where(p => p.CountryId == countryId.Value).ToList();
+            }
+
+            // 3. Филтър по Категория (ID)
+            if (categoryId.HasValue && categoryId.Value > 0)
+            {
+                filteredProducts = filteredProducts.Where(p => p.CategoryId == categoryId.Value).ToList();
+            }
+
+            // Мапване към ViewModel
+            List<ProductIndexVM> products = filteredProducts
+                .Select(product => new ProductIndexVM
+                {
+                    Id = product.Id,
+                    ProductName = product.ProductName,
+                    CountryId = product.CountryId,
+                    CountryName = product.Country.CountryName,
+                    CategoryId = product.CategoryId,
+                    CategoryName = product.Category.CategoryName,
+                    Picture = product.Picture,
+                    Quantity = product.Quantity,
+                    Price = product.Price,
+                    Discount = product.Discount,
+                    Description = product.Description,
+                    DepartureTime = product.DepartureTime,
+                    ArrivalDate = product.ArrivalDate,
+                })
+                .ToList();
+
+            // Зареждаме Държавите и Категориите за менютата
+            ViewBag.Countries = products.Select(p => new { Id = p.CountryId, Name = p.CountryName }).Distinct().ToList();
+            ViewBag.Categories = products.Select(p => new { Id = p.CategoryId, Name = p.CategoryName }).Distinct().ToList();
+
+            ViewBag.SelectedCountry = countryId;
+            ViewBag.SelectedCategory = categoryId;
+            if (User.Identity.IsAuthenticated)
+            {
+                // Вземаме ID-то на логнатия потребител
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+
+                // Вземаме само списък от числа (ID-тата на любимите му продукти)
+                ViewBag.FavoriteProductIds = _context.Favorites
+                    .Where(f => f.UserId == userId)
+                    .Select(f => f.ProductId)
+                    .ToList();
+            }
+            else
+            {
+                // За нелогнати потребители правим празен списък, за да не гърми View-то
+                ViewBag.FavoriteProductIds = new List<int>();
+            }
             return this.View(products);
         }
 
@@ -71,7 +123,9 @@ namespace TourWebApp.Controllers
                 Quantity = item.Quantity,
                 Price = item.Price,
                 Discount = item.Discount,
-                Description = item.Description
+                Description = item.Description,
+                DepartureTime = item.DepartureTime,
+                ArrivalDate = item.ArrivalDate
             };
 
             return View(product);
@@ -106,7 +160,7 @@ namespace TourWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                var createdId = _productService.Create(product.ProductName, product.CountryId, product.CategoryId, product.Picture, product.Quantity, product.Price, product.Discount, product.Description);
+                var createdId = _productService.Create(product.ProductName, product.CountryId, product.CategoryId, product.Picture, product.Quantity, product.Price, product.Discount, product.Description, product.DepartureTime, product.ArrivalDate);
 
                 if (createdId)
                 {
@@ -133,11 +187,14 @@ namespace TourWebApp.Controllers
                 CountryId = product.CountryId,
                 //countryName = product.country.countryName,
                 CategoryId = product.CategoryId,
+                Description = product.Description,
                 // CategoryName = product.Category.CategoryName,
                 Picture = product.Picture,
                 Quantity = product.Quantity,
                 Price = product.Price,
-                Discount = product.Discount
+                Discount = product.Discount,               
+                DepartureTime = product.DepartureTime,
+                ArrivalDate = product.ArrivalDate
             };
             updatedProduct.Countrys = _countryService.GetCountrys()
                 .Select(b => new CountryPairVM()
@@ -167,7 +224,7 @@ namespace TourWebApp.Controllers
             {
                 var updated = _productService.Update(id, product.ProductName, product.CountryId,
                     product.CategoryId, product.Picture,
-                    product.Quantity, product.Price, product.Discount, product.Description);
+                    product.Quantity, product.Price, product.Discount, product.Description, product.DepartureTime, product.ArrivalDate);
 
                 if (updated)
                 {

@@ -5,69 +5,124 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - TourWebApp</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/WebShopApp.styles.css" asp-append-version="true" />
+
+    <style>
+        /* Общи стилове за навигацията */
+        .navbar {
+            padding: 0.8rem 1rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .navbar-brand {
+            font-weight: 800;
+            color: #0056b3 !important;
+            letter-spacing: -0.5px;
+        }
+
+        .nav-link {
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        /* Специфичен стил за Любими */
+        .nav-favorites {
+            color: #dc3545 !important; /* Червен цвят */
+            background: rgba(220, 53, 69, 0.05);
+            border-radius: 8px;
+            margin-left: 5px;
+            padding: 8px 12px !important;
+        }
+
+            .nav-favorites:hover {
+                background: rgba(220, 53, 69, 0.1);
+                color: #a71d2a !important;
+            }
+
+        /* Стил за My Order */
+        .nav-orders {
+            color: #198754 !important; /* Зелен цвят */
+            background: rgba(25, 135, 84, 0.05);
+            border-radius: 8px;
+            margin-left: 5px;
+            padding: 8px 12px !important;
+        }
+
+        /* Оправяне на dropdown бутоните да не са грозни сиви */
+        .btn-secondary.dropdown-toggle {
+            background-color: transparent !important;
+            color: #444 !important;
+            border: 1px solid #dee2e6 !important;
+            font-weight: 500;
+        }
+
+            .btn-secondary.dropdown-toggle:hover {
+                background-color: #f8f9fa !important;
+            }
+    </style>
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom mb-3">
             <div class="container-fluid">
-                <a class="navbar-country" asp-area="" asp-controller="Home" asp-action="Index">WebShopApp</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <i class="bi bi-airplane-engines-fill me-2"></i>WebShopApp
+                </a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                    <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                        <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
                         </li>
-                        <li class="dropdown">
-                            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1"
+
+                        <li class="nav-item dropdown ms-2">
+                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownCountries"
                                     data-bs-toggle="dropdown" aria-expanded="false">
                                 Countries
                             </button>
-
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-searchStringCountryName="Bulgaria">Bulgaria</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-searchStringCountryName="Serbia">Serbia</a>
-                                </li>
-                                <li>
-                                    <a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-searchStringCountryName="Greece">Greece</a>
-                                </li>
+                            <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownCountries">
+                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-countryId="1">Bulgaria</a></li>
+                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-countryId="2">Serbia</a></li>
+                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-countryId="3">Greece</a></li>
                             </ul>
                         </li>
+
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Order" asp-action="MyOrders">My Order</a>
+                                <a class="nav-link nav-favorites" asp-controller="Favorite" asp-action="Index">
+                                    <i class="bi bi-heart-fill me-1"></i> Favorites
+                                </a>
+                            </li>
+
+                            <li class="nav-item">
+                                <a class="nav-link nav-orders" asp-area="" asp-controller="Order" asp-action="MyOrders">
+                                    <i class="bi bi-bag-check-fill me-1"></i> My Orders
+                                </a>
                             </li>
                         }
+
                         @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Administrator"))
                         {
-                            <li class="nav-item dropdown">
-                                <!-- Use nav-item + dropdown for navbar context -->
-                                <button class="btn btn-secondary dropdown-toggle"
+                            <li class="nav-item dropdown ms-2">
+                                <button class="btn btn-dark dropdown-toggle btn-sm shadow-sm"
                                         type="button"
-                                        id="dropdownMenuButton1"
+                                        id="dropdownAdmin"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false">
-                                    Statistics Module
+                                    <i class="bi bi-shield-lock me-1"></i> Admin Module
                                 </button>
-
-                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                    <li><a class="dropdown-item" href="/Client/Index">Clients</a></li>
-                                    <li><a class="dropdown-item" href="/Order/Index">Orders</a></li>
-                                    <!-- Add more items here if needed -->
+                                <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownAdmin">
+                                    <li><a class="dropdown-item" href="/Client/Index"><i class="bi bi-people me-2"></i>Clients</a></li>
+                                    <li><a class="dropdown-item" href="/Order/Index"><i class="bi bi-cart me-2"></i>Orders</a></li>
                                 </ul>
                             </li>
                         }
@@ -77,17 +132,20 @@
             </div>
         </nav>
     </header>
+
     <div class="container">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - WebShopApp - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted bg-white mt-5">
+        <div class="container py-3 text-center">
+            &copy; 2026 - <span class="fw-bold text-primary">WebShopApp</span> -
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none ms-2">Privacy Policy</a>
         </div>
     </footer>
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

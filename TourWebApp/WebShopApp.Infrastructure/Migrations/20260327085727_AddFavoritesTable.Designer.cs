@@ -12,8 +12,8 @@ using TourWebApp.Infrastructure.Data;
 namespace TourWebApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260306125846_first")]
-    partial class first
+    [Migration("20260327085727_AddFavoritesTable")]
+    partial class AddFavoritesTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -281,6 +281,28 @@ namespace TourWebApp.Infrastructure.Migrations
                     b.ToTable("Countrys");
                 });
 
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Favorite", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Favorites");
+                });
+
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
@@ -326,11 +348,17 @@ namespace TourWebApp.Infrastructure.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("ArrivalDate")
+                        .HasColumnType("datetime2");
+
                     b.Property<int>("CategoryId")
                         .HasColumnType("int");
 
                     b.Property<int>("CountryId")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("DepartureTime")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -411,6 +439,17 @@ namespace TourWebApp.Infrastructure.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Favorite", b =>
+                {
+                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Order", b =>

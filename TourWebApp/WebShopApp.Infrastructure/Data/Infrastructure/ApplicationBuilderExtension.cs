@@ -82,12 +82,11 @@ namespace TourWebApp.Infrastructure.Data.Infrastructure
 
             dataCategory.Categories.AddRange(new[]
             {
-              new Category {CategoryName="Laptop"},
-              new Category {CategoryName="Computer"},
-              new Category {CategoryName="Monitor"},
-              new Category {CategoryName="TV"},
-              new Category {CategoryName="Mobile phone"},
-              new Category {CategoryName="Smart watch"}
+              new Category {CategoryName="One-Day"},
+              new Category {CategoryName="Weekend"},
+              new Category {CategoryName="Multi-Day"},
+              new Category {CategoryName="Long-stay Holiday (7+ days)"},
+              
             });
 
             dataCategory.SaveChanges();
@@ -101,13 +100,13 @@ namespace TourWebApp.Infrastructure.Data.Infrastructure
 
             dataCountry.Countrys.AddRange(new[]
             {
-               new Country {CountryName="Acer" },
-               new Country {CountryName="Asus"},
-               new Country {CountryName="Apple"},
-               new Country {CountryName="Dell"},
-               new Country { CountryName = "HP"},
-               new Country { CountryName = "Huawei"},
-               new Country { CountryName = "SamSung"},
+              new Country { CountryName="Bulgaria" },
+              new Country { CountryName="Turkey" },
+              new Country { CountryName="Greece" },
+              new Country { CountryName="Italy" },
+              new Country { CountryName="Spain" },
+              new Country { CountryName="Egypt" },
+              new Country { CountryName="United Arab Emirates"},
             });
 
             dataCountry.SaveChanges();
