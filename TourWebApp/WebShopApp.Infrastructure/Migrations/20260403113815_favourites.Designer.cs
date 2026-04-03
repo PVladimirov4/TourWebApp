@@ -12,8 +12,8 @@ using TourWebApp.Infrastructure.Data;
 namespace TourWebApp.Infrastructure.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260327085727_AddFavoritesTable")]
-    partial class AddFavoritesTable
+    [Migration("20260403113815_favourites")]
+    partial class favourites
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
