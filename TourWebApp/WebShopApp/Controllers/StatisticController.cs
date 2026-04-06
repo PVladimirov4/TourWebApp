@@ -19,9 +19,9 @@ namespace TourWebApp.Controllers
 
             StatisticVM statistics = new StatisticVM();
             statistics.CountClients = statisticsService.CountClients();
-            statistics.CountProducts = statisticsService.CountProducts();
-            statistics.CountOrders = statisticsService.CountOrders();
-            statistics.SumOrders = statisticsService.CountOrders();
+            statistics.CountHolidays = statisticsService.CountHolidays();
+            statistics.CountReservations = statisticsService.CountReservations();
+            statistics.SumReservations = statisticsService.CountReservations();
 
 
             return View(statistics);

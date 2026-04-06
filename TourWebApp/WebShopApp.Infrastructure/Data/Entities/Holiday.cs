@@ -7,14 +7,14 @@ using System.Threading.Tasks;
 
 namespace TourWebApp.Infrastructure.Data.Entities
 {
-    public class Product
+    public class Holiday
     {
         [Required]
         [MaxLength(30)]
         public int Id { get; set; }
 
         [Required]
-        public string ProductName { get; set; } = null!;
+        public string HolidayName { get; set; } = null!;
 
         [Required]
         public int CountryId { get; set; }
@@ -40,6 +40,6 @@ namespace TourWebApp.Infrastructure.Data.Entities
 
         public decimal Discount { get; set; }
 
-        public virtual IEnumerable<Order> Orders { get; set; } = new List<Order>();
+        public virtual IEnumerable<Reservation> Reservations { get; set; } = new List<Reservation>();
     }
 }

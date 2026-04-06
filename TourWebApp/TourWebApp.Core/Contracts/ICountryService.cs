@@ -12,6 +12,6 @@ namespace TourWebApp.Core.Contracts
     {
         List<Country> GetCountrys();
         Country GetCountryById(int countryId);
-        List<Country> GetProductsByCountry(int countryId);
+        List<Country> GetHolidaysByCountry(int countryId);
     }
 }

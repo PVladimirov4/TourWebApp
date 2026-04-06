@@ -1,14 +1,14 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TourWebApp.Models.Product
+namespace TourWebApp.Models.Holiday
 {
-    public class ProductDeleteVM
+    public class HolidayDeleteVM
     {
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Product Name")]
-        public string ProductName { get; set; } = null!;
+        [Display(Name = "Holiday Name")]
+        public string HolidayName { get; set; } = null!;
 
         [Display(Name = "country")]
         public int CountryId { get; set; }

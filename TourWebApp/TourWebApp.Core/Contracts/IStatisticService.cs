@@ -8,9 +8,9 @@ namespace TourWebApp.Core.Contracts
 {
     public interface IStatisticService
     {
-        int CountProducts();
+        int CountHolidays();
         int CountClients();
-        int CountOrders();
-        decimal SumOrders();
+        int CountReservations();
+        decimal SumReservations();
     }
 }

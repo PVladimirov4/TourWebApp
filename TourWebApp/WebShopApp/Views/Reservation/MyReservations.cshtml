@@ -1,0 +1,129 @@
+﻿@model IEnumerable<TourWebApp.Models.Reservation.ReservationIndexVM>
+@{
+    ViewData["Title"] = "Моите Резервации";
+}
+
+<style>
+    :root {
+        --travel-blue: #0056b3;
+        --success-green: #28a745;
+    }
+
+    .reservation-header {
+        background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+        color: white;
+        padding: 40px 0;
+        border-radius: 0 0 30px 30px;
+        margin-bottom: 40px;
+    }
+
+    .res-card {
+        border: none;
+        border-radius: 20px;
+        background: white;
+        transition: transform 0.3s ease;
+        overflow: hidden;
+        border-left: 6px solid var(--travel-blue);
+    }
+
+    .res-card:hover {
+        transform: scale(1.01);
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+    }
+
+    .res-img {
+        width: 150px;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 15px;
+    }
+
+    .status-badge {
+        background-color: rgba(40, 167, 69, 0.1);
+        color: var(--success-green);
+        padding: 5px 15px;
+        border-radius: 50px;
+        font-size: 0.8rem;
+        font-weight: bold;
+        display: inline-block;
+    }
+
+    .price-tag {
+        font-size: 1.25rem;
+        font-weight: 800;
+        color: #2d3748;
+    }
+
+    .res-date {
+        font-size: 0.85rem;
+        color: #718096;
+    }
+</style>
+
+<div class="reservation-header text-center shadow">
+    <h1 class="fw-bold"><i class="bi bi-journal-check me-2"></i>Моите Резервации</h1>
+    <p class="opacity-75">Всички ваши предстоящи и минали пътешествия на едно място</p>
+</div>
+
+<div class="container">
+    @if (!Model.Any())
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-calendar-x display-1 text-muted"></i>
+            <h3 class="mt-3 text-secondary">Все още нямате резервации.</h3>
+            <a asp-controller="Holiday" asp-action="Index" class="btn btn-primary mt-3 rounded-pill px-4">Разгледай екскурзиите</a>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                <div class="col-12 mb-4">
+                    <div class="card res-card shadow-sm p-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-2 text-center">
+                                <img src="@item.Picture" class="res-img shadow-sm" alt="Holiday Image">
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="status-badge mb-2">
+                                    <i class="bi bi-check-circle-fill me-1"></i> Потвърдена
+                                </div>
+                                <h4 class="fw-bold mb-1">@item.Holiday</h4>
+                                <div class="res-date">
+                                    <i class="bi bi-clock me-1"></i> Резервирано на: @item.ReservationDate
+                                </div>
+                                <div class="mt-2 text-muted small">
+                                    <i class="bi bi-person-badge me-1"></i> Потребител: @item.User
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 border-start border-end text-center">
+                                <div class="text-muted small text-uppercase fw-bold">Количество</div>
+                                <div class="h5 fw-bold">@item.Quantity бр.</div>
+                                <hr class="my-2 mx-4">
+                                <div class="text-muted small text-uppercase fw-bold">Ед. Цена</div>
+                                <div>@item.Price лв.</div>
+                            </div>
+
+                            <div class="col-md-3 text-center">
+                                <div class="text-muted small text-uppercase fw-bold">Обща Сума</div>
+                                <div class="price-tag text-primary">@item.TotalPrice лв.</div>
+                                @if (item.Discount > 0)
+                                {
+                                    <div class="badge bg-danger rounded-pill">-@item.Discount% отстъпка</div>
+                                }
+                                <div class="mt-3">
+                                    <a asp-controller="Holiday" asp-action="Details" asp-route-id="@item.HolidayId" class="btn btn-sm btn-outline-dark rounded-pill px-3">
+                                        Виж дестинацията
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

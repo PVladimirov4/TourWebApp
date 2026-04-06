@@ -1,0 +1,141 @@
+﻿@model IEnumerable<TourWebApp.Models.Reservation.ReservationIndexVM>
+@{
+    ViewData["Title"] = "Всички Резервации";
+}
+
+<style>
+    .admin-card {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: none;
+        overflow: hidden;
+    }
+
+    .table thead {
+        background-color: #2d3748;
+        color: white;
+    }
+
+    .table th {
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+        padding: 15px;
+        border: none;
+    }
+
+    .table td {
+        vertical-align: middle;
+        padding: 15px;
+        color: #4a5568;
+        border-bottom: 1px solid #edf2f7;
+    }
+
+    .holiday-img-admin {
+        width: 60px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .user-badge {
+        background-color: #ebf8ff;
+        color: #2b6cb0;
+        padding: 4px 10px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 0.85rem;
+    }
+
+    .price-bold {
+        font-weight: 700;
+        color: #2d3748;
+    }
+
+    .total-price-highlight {
+        color: #38a169;
+        font-weight: 800;
+    }
+
+    .page-header {
+        margin-bottom: 30px;
+        border-left: 5px solid #4a90e2;
+        padding-left: 20px;
+    }
+</style>
+
+<div class="container-fluid py-5">
+    <div class="page-header">
+        <h1 class="fw-bold text-dark">Административен панел</h1>
+        <p class="text-muted">Управление на всички постъпили резервации в системата</p>
+    </div>
+
+    <div class="card admin-card">
+        <div class="table-responsive">
+            <table class="table table-hover mb-0">
+                <thead>
+                    <tr>
+                        <th>Дата на резервация</th>
+                        <th>Клиент</th>
+                        <th colspan="2">Екскурзия</th>
+                        <th class="text-center">Брой</th>
+                        <th>Ед. Цена</th>
+                        <th>Отстъпка</th>
+                        <th>Обща Сума</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td class="small">
+                                <i class="bi bi-calendar3 me-1 text-primary"></i>
+                                @item.ReservationDate
+                            </td>
+                            <td>
+                                <span class="user-badge">
+                                    <i class="bi bi-person-fill me-1"></i> @item.User
+                                </span>
+                            </td>
+                            <td style="width: 70px;">
+                                <img src="@item.Picture" class="holiday-img-admin" alt="Holiday" />
+                            </td>
+                            <td>
+                                <div class="fw-bold text-dark">@item.Holiday</div>
+                                <small class="text-muted">ID: #@item.HolidayId</small>
+                            </td>
+                            <td class="text-center">
+                                <span class="badge bg-light text-dark border">@item.Quantity</span>
+                            </td>
+                            <td class="price-bold">@item.Price лв.</td>
+                            <td>
+                                @if (item.Discount > 0)
+                                {
+                                    <span class="text-danger fw-bold">-@item.Discount%</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted small">Няма</span>
+                                }
+                            </td>
+                            <td class="total-price-highlight h5 mb-0">
+                                @item.TotalPrice лв.
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+
+        <div class="card-footer bg-white py-3 border-0">
+            <div class="row align-items-center">
+                <div class="col">
+                    <span class="text-muted">Общо резервации в системата: <strong>@Model.Count()</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

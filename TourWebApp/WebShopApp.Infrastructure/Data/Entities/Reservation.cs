@@ -7,15 +7,15 @@ using System.Threading.Tasks;
 
 namespace TourWebApp.Infrastructure.Data.Entities
 {
-    public class Order
+    public class Reservation
     {
         public int Id { get; set; }
         [Required]
-        public DateTime OrderDate { get; set; }
+        public DateTime ReservationDate { get; set; }
 
         [Required]
-        public int ProductId { get; set; }
-        public virtual Product Product { get; set; } = null!;
+        public int HolidayId { get; set; }
+        public virtual Holiday Holiday { get; set; } = null!;
 
         [Required] 
         public string UserId { get; set; } = null!;

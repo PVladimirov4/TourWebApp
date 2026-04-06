@@ -6,12 +6,12 @@ namespace TourWebApp.Models.Statistic
     {
         [Display(Name = "Count Clients")]
         public int CountClients { get; set; }
-        [Display(Name = "Count Products")]
-        public int CountProducts { get; set; }
-        [Display(Name = "Count Orders")]
-        public int CountOrders { get; set; }
-        [Display(Name = "Total Sum Orders ")]
-        public decimal SumOrders { get; set; }
+        [Display(Name = "Count Holidays")]
+        public int CountHolidays { get; set; }
+        [Display(Name = "Count Reservations")]
+        public int CountReservations { get; set; }
+        [Display(Name = "Total Sum Reservations ")]
+        public decimal SumReservations { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ using TourWebApp.Infrastructure.Data.Entities;
 
 namespace TourWebApp.Core.Services
 {
-    public class ProductService : IProductService
+    public class HolidayService : IHolidayService
     {
 
         private readonly ApplicationDbContext _context;
@@ -19,15 +19,15 @@ namespace TourWebApp.Core.Services
             return _context.Countrys.ToList(); // Увери се, че името на таблицата е точно такова
         }
 
-        public ProductService(ApplicationDbContext context)
+        public HolidayService(ApplicationDbContext context)
         {
             _context = context;
         }
         public bool Create(string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
         {
-            Product item = new Product
+            Holiday item = new Holiday
             {
-                ProductName = name,
+                HolidayName = name,
                 Country = _context.Countrys.Find(countryId),
                 Category = _context.Categories.Find(categoryId),
                 Picture = picture,
@@ -39,75 +39,75 @@ namespace TourWebApp.Core.Services
                 ArrivalDate = arrivalDate
             };
 
-            _context.Products.Add(item);
+            _context.Holidays.Add(item);
             return _context.SaveChanges() != 0;
         }
 
-        public Product GetProductById(int productId)
+        public Holiday GetHolidayById(int holidayId)
         {
-            return _context.Products.Find(productId);
+            return _context.Holidays.Find(holidayId);
         }
 
-        public List<Product> GetProducts()
+        public List<Holiday> GetHolidays()
         {
-            List<Product> products = _context.Products.ToList();
-            return products;
+            List<Holiday> holidays = _context.Holidays.ToList();
+            return holidays;
         }
 
-        public List<Product> GetProducts(string searchStringCategoryName, string searchStringcountryName)
+        public List<Holiday> GetHolidays(string searchStringCategoryName, string searchStringcountryName)
         {
-            List<Product> products = _context.Products.ToList();
+            List<Holiday> holidays = _context.Holidays.ToList();
             if (!String.IsNullOrEmpty(searchStringCategoryName) && !String.IsNullOrEmpty(searchStringcountryName))
             {
-                products = products.Where(x =>
+                holidays = holidays.Where(x =>
               x.Category.CategoryName.ToLower().Contains   (searchStringCategoryName.ToLower())
                && x.Country.CountryName.ToLower().Contains      (searchStringcountryName.ToLower())
                ).ToList();
             }
             else if (!String.IsNullOrEmpty(searchStringCategoryName))
             {
-               products = products.Where(x => x.Category.CategoryName.ToLower ().Contains (searchStringCategoryName.ToLower())).ToList();
+                holidays = holidays.Where(x => x.Category.CategoryName.ToLower ().Contains (searchStringCategoryName.ToLower())).ToList();
             }
             else if (!String.IsNullOrEmpty(searchStringcountryName))
             {
-                products = products.Where(x => x.Country.CountryName.ToLower().Contains(searchStringcountryName.ToLower())).ToList();
+                holidays = holidays.Where(x => x.Country.CountryName.ToLower().Contains(searchStringcountryName.ToLower())).ToList();
             } // ToList();
-            return products;
+            return holidays;
         }
         
-        public bool RemoveById(int productId)
+        public bool RemoveById(int holidayId)
         {
-            var product = GetProductById(productId);
-            if(product == default(Product)) return false;
-            _context.Remove(product);
+            var holiday = GetHolidayById(holidayId);
+            if(holiday == default(Holiday)) return false;
+            _context.Remove(holiday);
             return _context.SaveChanges() != 0;
         }
 
-        public bool Update(int productId, string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
+        public bool Update(int holidayId, string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
         {
-            var product = GetProductById(productId);
-            if (product == default(Product))
+            var holiday = GetHolidayById(holidayId);
+            if (holiday == default(Holiday))
             {
                 return false;
             }
 
-            product.ProductName = name;
+            holiday.HolidayName = name;
 
-            //product.countryId = countryId;
-            //product.CategoryId = categoryId;
+            //holiday.countryId = countryId;
+            //holiday.CategoryId = categoryId;
 
-            product.Country = _context.Countrys.Find(countryId);
-            product.Category = _context.Categories.Find(categoryId);
+            holiday.Country = _context.Countrys.Find(countryId);
+            holiday.Category = _context.Categories.Find(categoryId);
 
-            product.Picture = picture;
-            product.Quantity = quantity;
-            product.Price = price;
-            product.Discount = discount;
-            product.Description = description;
-            product.DepartureTime = departureTime;
-            product.ArrivalDate = arrivalDate;
+            holiday.Picture = picture;
+            holiday.Quantity = quantity;
+            holiday.Price = price;
+            holiday.Discount = discount;
+            holiday.Description = description;
+            holiday.DepartureTime = departureTime;
+            holiday.ArrivalDate = arrivalDate;
 
-            _context.Update(product);
+            _context.Update(holiday);
             return _context.SaveChanges() != 0;
 
         }

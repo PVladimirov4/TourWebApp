@@ -29,14 +29,14 @@ namespace TourWebApp.Core.Services
                 return _context.Countrys.ToList();
             }
 
-            public List<Product> GetProductsByCountry(int countryId)
+            public List<Holiday> GetHolidaysByCountry(int countryId)
             {
-                return _context.Products
+                return _context.Holidays
                     .Where(x => x.CountryId == countryId)
                     .ToList();
             }
 
-        List<Country> ICountryService.GetProductsByCountry(int countryId)
+        List<Country> ICountryService.GetHolidaysByCountry(int countryId)
         {
             throw new NotImplementedException();
         }

@@ -280,63 +280,20 @@ namespace TourWebApp.Infrastructure.Migrations
 
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Favorite", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("ProductId")
+                    b.Property<int>("HolidayId")
                         .HasColumnType("int");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("Id");
+                    b.HasKey("HolidayId", "UserId");
 
-                    b.HasIndex("ProductId");
+                    b.HasIndex("UserId");
 
                     b.ToTable("Favorites");
                 });
 
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Order", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProductId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Orders");
-                });
-
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Product", b =>
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Holiday", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -364,16 +321,16 @@ namespace TourWebApp.Infrastructure.Migrations
                     b.Property<decimal>("Discount")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("HolidayName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Picture")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
-
-                    b.Property<string>("ProductName")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
@@ -384,7 +341,43 @@ namespace TourWebApp.Infrastructure.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Holidays");
+                });
+
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Reservation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal>("Discount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("HolidayId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReservationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("HolidayId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Reservations");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -440,20 +433,9 @@ namespace TourWebApp.Infrastructure.Migrations
 
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Favorite", b =>
                 {
-                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Product", "Product")
+                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Holiday", "Holiday")
                         .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Order", b =>
-                {
-                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Product", "Product")
-                        .WithMany("Orders")
-                        .HasForeignKey("ProductId")
+                        .HasForeignKey("HolidayId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -463,21 +445,21 @@ namespace TourWebApp.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Product");
+                    b.Navigation("Holiday");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Product", b =>
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Holiday", b =>
                 {
                     b.HasOne("TourWebApp.Infrastructure.Data.Entities.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany("Holidays")
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("TourWebApp.Infrastructure.Data.Entities.Country", "Country")
-                        .WithMany("Products")
+                        .WithMany("Holidays")
                         .HasForeignKey("CountryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -487,19 +469,38 @@ namespace TourWebApp.Infrastructure.Migrations
                     b.Navigation("Country");
                 });
 
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Reservation", b =>
+                {
+                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.Holiday", "Holiday")
+                        .WithMany("Reservations")
+                        .HasForeignKey("HolidayId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("TourWebApp.Infrastructure.Data.Entities.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Holiday");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Category", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Holidays");
                 });
 
             modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Country", b =>
                 {
-                    b.Navigation("Products");
+                    b.Navigation("Holidays");
                 });
 
-            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Product", b =>
+            modelBuilder.Entity("TourWebApp.Infrastructure.Data.Entities.Holiday", b =>
                 {
-                    b.Navigation("Orders");
+                    b.Navigation("Reservations");
                 });
 #pragma warning restore 612, 618
         }

@@ -14,8 +14,8 @@ namespace TourWebApp.Infrastructure.Data
         }
         public DbSet<Country> Countrys { get; set; }
         public DbSet<Category> Categories { get; set; }
-        public DbSet<Order> Orders { get; set; }
-        public DbSet<Product> Products { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<Holiday> Holidays { get; set; }
         public DbSet<Favorite> Favorites { get; set; }
 
     }

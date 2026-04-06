@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace TourWebApp.Infrastructure.Data.Entities
 {
-    [PrimaryKey(nameof(ProductId), nameof(UserId))]
+    [PrimaryKey(nameof(HolidayId), nameof(UserId))]
     public class Favorite
     {
         [Required]
-        public int ProductId { get; set; }
-        public virtual Product Product { get; set; } = null!;
+        public int HolidayId { get; set; }
+        public virtual Holiday Holiday { get; set; } = null!;
 
         [Required]
         public string UserId { get; set; } = null!;

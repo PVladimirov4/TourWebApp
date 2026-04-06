@@ -1,0 +1,77 @@
+﻿@{
+    ViewData["Title"] = "Няма свободни места";
+}
+
+<style>
+    .denied-container {
+        min-height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .error-card {
+        background: white;
+        padding: 50px;
+        border-radius: 30px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+        max-width: 500px;
+        text-align: center;
+        border-bottom: 8px solid #e53e3e;
+    }
+
+    .error-icon {
+        font-size: 80px;
+        color: #e53e3e;
+        margin-bottom: 20px;
+        display: inline-block;
+        animation: shake 0.5s ease-in-out;
+    }
+
+    @@keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-10px); }
+        75% { transform: translateX(10px); }
+    }
+
+    .btn-return {
+        background: #2d3748;
+        color: white;
+        border-radius: 50px;
+        padding: 12px 30px;
+        text-decoration: none;
+        transition: all 0.3s;
+        display: inline-block;
+        margin-top: 20px;
+        font-weight: 600;
+    }
+
+    .btn-return:hover {
+        background: #4a5568;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+</style>
+
+<div class="denied-container">
+    <div class="error-card">
+        <div class="error-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+
+        <h2 class="fw-bold text-dark mb-3">Опа! Местата свършиха.</h2>
+
+        <p class="text-muted mb-4">
+            Изглежда, че някой ви е изпреварил в последната секунда или сте избрали повече места, отколкото са останали налични за тази дестинация.
+        </p>
+
+        <div class="alert alert-warning border-0 small">
+            <strong>Съвет:</strong> Опитайте да намалите броя на туристите или разгледайте другите ни страхотни предложения.
+        </div>
+
+        <a asp-controller="Holiday" asp-action="Index" class="btn-return">
+            <i class="bi bi-arrow-left me-2"></i>Към всички почивки
+        </a>
+    </div>
+</div>

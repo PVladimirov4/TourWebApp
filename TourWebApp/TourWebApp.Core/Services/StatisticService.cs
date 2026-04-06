@@ -19,19 +19,19 @@ namespace TourWebApp.Core.Services
         }
         public int CountClients()
         {
-            return _context.Orders.Count();
+            return _context.Reservations.Count();
         }
-        public int CountOrders()
+        public int CountReservations()
         {
-            return _context.Orders.Count();
+            return _context.Reservations.Count();
         }
-        public int CountProducts()
+        public int CountHolidays()
         {
-            return _context.Products.Count();
+            return _context.Holidays.Count();
         }
-        public decimal SumOrders()
+        public decimal SumReservations()
         {
-            var suma = _context.Orders.Sum(x => x.TotalPrice);
+            var suma = _context.Reservations.Sum(x => x.TotalPrice);
             return suma;
         }
     }

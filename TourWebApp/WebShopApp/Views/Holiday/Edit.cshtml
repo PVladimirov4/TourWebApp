@@ -1,0 +1,210 @@
+﻿@model TourWebApp.Models.Holiday.HolidayEditVM
+@{
+    ViewData["Title"] = "Редактиране на дестинация";
+}
+
+<style>
+    .edit-container {
+        max-width: 1000px;
+        margin: 40px auto;
+    }
+
+    .edit-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        border: none;
+        overflow: hidden;
+    }
+
+    .edit-header {
+        background: #2563eb;
+        color: white;
+        padding: 30px;
+        text-align: center;
+    }
+
+    .form-section-title {
+        font-size: 1.1rem;
+        font-weight: 700;
+        color: #1e293b;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #f1f5f9;
+        display: flex;
+        align-items: center;
+    }
+
+    .form-section-title i {
+        margin-right: 10px;
+        color: #2563eb;
+    }
+
+    .form-floating > label {
+        color: #64748b;
+    }
+
+    .btn-save-custom {
+        background: #2563eb;
+        border: none;
+        padding: 12px 40px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+    .btn-save-custom:hover {
+        background: #1d4ed8;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+    }
+
+    .img-preview-container {
+        border-radius: 15px;
+        overflow: hidden;
+        border: 2px dashed #e2e8f0;
+        height: 200px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f8fafc;
+    }
+
+    .img-preview-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+</style>
+
+<div class="edit-container">
+    <div class="edit-card">
+        <div class="edit-header">
+            <h2 class="mb-0 fw-bold">Редактиране на оферта</h2>
+            <p class="opacity-75 mb-0">Промяна на детайли за @Model.HolidayName</p>
+        </div>
+
+        <form asp-action="Edit" class="p-4 p-md-5">
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3"></div>
+            <input type="hidden" asp-for="Id" />
+
+            <div class="row g-4">
+                <div class="col-md-7">
+                    <h5 class="form-section-title">
+                        <i class="bi bi-info-circle"></i> Основна информация
+                    </h5>
+
+                    <div class="form-floating mb-3">
+                        <input asp-for="HolidayName" class="form-control" placeholder="Име на екскурзията" />
+                        <label asp-for="HolidayName">Наименование на офертата</label>
+                        <span asp-validation-for="HolidayName" class="text-danger small"></span>
+                    </div>
+
+                    <div class="row g-3 mb-3">
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted mb-1">Държава</label>
+                            <select asp-for="CountryId" class="form-select form-select-lg">
+                                @foreach (var country in Model.Countrys)
+                                {
+                                    <option value="@country.Id">@country.Name</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="small fw-bold text-muted mb-1">Категория</label>
+                            <select asp-for="CategoryId" class="form-select form-select-lg">
+                                @foreach (var category in Model.Categories)
+                                {
+                                    <option value="@category.Id">@category.Name</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-3">
+                        <label class="small fw-bold text-muted mb-1">Описание на турa</label>
+                        <textarea asp-for="Description" class="form-control" rows="6" placeholder="Въведете детайли за програмата..."></textarea>
+                        <span asp-validation-for="Description" class="text-danger small"></span>
+                    </div>
+                </div>
+
+                <div class="col-md-5">
+                    <h5 class="form-section-title">
+                        <i class="bi bi-camera"></i> Снимка и визия
+                    </h5>
+                    <div class="img-preview-container mb-3">
+                        @if (!string.IsNullOrEmpty(Model.Picture))
+                        {
+                            <img src="@Model.Picture" id="imgPreview" alt="Preview" />
+                        }
+                        else
+                        {
+                            <i class="bi bi-image text-muted fs-1"></i>
+                        }
+                    </div>
+                    <div class="form-group mb-4">
+                        <input asp-for="Picture" class="form-control form-control-sm" id="imgInput" placeholder="URL към снимка..." />
+                        <span asp-validation-for="Picture" class="text-danger small"></span>
+                    </div>
+
+                    <h5 class="form-section-title">
+                        <i class="bi bi-cash-stack"></i> Цени и Наличност
+                    </h5>
+                    <div class="row g-3 mb-4">
+                        <div class="col-6">
+                            <label asp-for="Price" class="small fw-bold text-muted">Цена (лв)</label>
+                            <input asp-for="Price" class="form-control" />
+                        </div>
+                        <div class="col-6">
+                            <label asp-for="Discount" class="small fw-bold text-muted">Отстъпка (%)</label>
+                            <input asp-for="Discount" class="form-control" />
+                        </div>
+                        <div class="col-12">
+                            <label asp-for="Quantity" class="small fw-bold text-muted">Брой места</label>
+                            <input asp-for="Quantity" class="form-control" />
+                        </div>
+                    </div>
+
+                    <h5 class="form-section-title">
+                        <i class="bi bi-calendar-event"></i> Дати
+                    </h5>
+                    <div class="mb-3">
+                        <label class="small fw-bold text-muted">Дата на заминаване</label>
+                        <input asp-for="DepartureTime" class="form-control" type="datetime-local" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="small fw-bold text-muted">Дата на връщане</label>
+                        <input asp-for="ArrivalDate" class="form-control" type="date" />
+                    </div>
+                </div>
+            </div>
+
+            <hr class="my-4">
+
+            <div class="d-flex justify-content-between align-items-center">
+                <a asp-action="Index" class="btn btn-link text-muted text-decoration-none">
+                    <i class="bi bi-x-circle me-1"></i> Отказ
+                </a>
+                <button type="submit" class="btn btn-primary btn-save-custom shadow">
+                    <i class="bi bi-check2-circle me-2"></i> Запази промените
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Скрипт за обновяване на снимката в реално време
+        document.getElementById('imgInput').addEventListener('input', function() {
+            const preview = document.getElementById('imgPreview');
+            if (this.value) {
+                preview.src = this.value;
+            }
+        });
+    </script>
+}

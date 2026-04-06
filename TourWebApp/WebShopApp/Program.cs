@@ -36,8 +36,8 @@ namespace TourWebApp
 
             builder.Services.AddTransient<ICategoryService, CategoryService>();
             builder.Services.AddTransient<ICountryService, CountryService>();
-            builder.Services.AddTransient<IProductService, ProductService>();
-            builder.Services.AddTransient<IOrderService, OrderService>();
+            builder.Services.AddTransient<IHolidayService, HolidayService>();
+            builder.Services.AddTransient<IReservationService, ReservationService>();
             builder.Services.AddTransient<IStatisticService, StatisticService>();
             var app = builder.Build();
             app.PrepareDatabase();

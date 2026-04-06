@@ -1,0 +1,94 @@
+﻿@{
+    ViewData["Title"] = "Успешно изтриване";
+}
+
+<style>
+    .success-container {
+        min-height: 70vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .status-card {
+        background: white;
+        padding: 50px 40px;
+        border-radius: 30px;
+        box-shadow: 0 20px 60px rgba(0,0,0,0.07);
+        text-align: center;
+        max-width: 500px;
+        border-top: 8px solid #10b981; /* Зелен акцент */
+    }
+
+    .icon-box {
+        width: 100px;
+        height: 100px;
+        background: #ecfdf5;
+        color: #10b981;
+        font-size: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        margin: 0 auto 30px;
+        animation: bounceIn 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    @@keyframes bounceIn {
+        0% { transform: scale(0.3); opacity: 0; }
+        50% { transform: scale(1.05); opacity: 1; }
+        70% { transform: scale(0.9); }
+        100% { transform: scale(1); }
+    }
+
+    .btn-return {
+        background: #1e293b;
+        color: white;
+        padding: 14px 40px;
+        border-radius: 15px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        display: inline-block;
+        border: none;
+        box-shadow: 0 4px 15px rgba(30, 41, 59, 0.2);
+    }
+
+    .btn-return:hover {
+        background: #0f172a;
+        color: white;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 25px rgba(30, 41, 59, 0.3);
+    }
+
+    .celebration-text {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #1e293b;
+        margin-bottom: 15px;
+    }
+</style>
+
+<div class="success-container">
+    <div class="status-card">
+        <div class="icon-box shadow-sm">
+            <i class="bi bi-cloud-check"></i>
+        </div>
+
+        <h2 class="celebration-text">Офертата е премахната!</h2>
+
+        <p class="text-muted mb-4">
+            Дестинацията беше успешно изтрита от каталога. Промените вече са видими за всички потребители на сайта.
+        </p>
+
+        <div class="alert alert-success border-0 rounded-4 py-2 mb-4" style="background: #f0fdf4;">
+            <small class="fw-bold text-success">
+                <i class="bi bi-check2-all me-1"></i> Базата данни е актуализирана
+            </small>
+        </div>
+
+        <a asp-action="Index" class="btn-return">
+            <i class="bi bi-list-ul me-2"></i> КЪМ СПИСЪКА С ОФЕРТИ
+        </a>
+    </div>
+</div>

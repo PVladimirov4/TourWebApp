@@ -1,4 +1,4 @@
-﻿@model TourWebApp.Models.Product.ProductCreateVM
+﻿@model TourWebApp.Models.Holiday.HolidayCreateVM
 
 @{
     ViewData["Title"] = "Create Tour Package";
@@ -95,12 +95,12 @@
                             <h5 class="text-primary mb-4"><i class="bi bi-info-circle me-2"></i>General Information</h5>
 
                             <div class="mb-4">
-                                <label asp-for="ProductName" class="form-label fw-bold small"></label>
+                                <label asp-for="HolidayName" class="form-label fw-bold small"></label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-map"></i></span>
-                                    <input asp-for="ProductName" class="form-control" placeholder="e.g. Weekend in Rome" />
+                                    <input asp-for="HolidayName" class="form-control" placeholder="e.g. Weekend in Rome" />
                                 </div>
-                                <span asp-validation-for="ProductName" class="text-danger small"></span>
+                                <span asp-validation-for="HolidayName" class="text-danger small"></span>
                             </div>
 
                             <div class="row">

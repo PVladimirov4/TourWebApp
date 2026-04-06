@@ -1,0 +1,282 @@
+﻿@model IEnumerable<TourWebApp.Models.Holiday.HolidayIndexVM>
+@{
+    ViewData["Title"] = "Всички Екскурзии";
+}
+
+<style>
+    :root {
+        --travel-blue: #0056b3;
+        --travel-gold: #ffc107;
+        --light-bg: #f4f7f6;
+    }
+
+    body {
+        background-color: var(--light-bg);
+    }
+
+    /* Модерен Филтър Бар */
+    .filter-section {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+        padding: 30px;
+        margin-bottom: 40px;
+        border: 1px solid #edf2f7;
+    }
+
+    .tour-card {
+        border: none;
+        border-radius: 15px;
+        transition: all 0.3s ease;
+        background: white;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    .tour-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+    }
+
+    .image-container {
+        position: relative;
+        height: 220px;
+        overflow: hidden;
+    }
+
+    .tour-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: 0.5s;
+    }
+
+    .tour-card:hover .tour-img {
+        transform: scale(1.08);
+    }
+
+    .badge-duration {
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(255, 255, 255, 0.95);
+        color: #1a202c;
+        padding: 6px 14px;
+        border-radius: 20px;
+        font-weight: 700;
+        font-size: 0.75rem;
+        z-index: 2;
+    }
+
+    .badge-discount {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: #e53e3e;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 10px;
+        font-weight: bold;
+        z-index: 2;
+    }
+
+    /* НОВИ СТИЛОВЕ ЗА СЪРЦЕТО */
+    .bi-heart-fill.text-danger {
+        transform: scale(1.2);
+        filter: drop-shadow(0 0 2px rgba(220, 53, 69, 0.4));
+    }
+
+    .tour-card button:hover .bi-heart {
+        color: #dc3545 !important;
+        transform: scale(1.2);
+        transition: 0.3s;
+    }
+
+    .btn-reserve {
+        background-color: var(--travel-gold);
+        color: #000;
+        font-weight: 800;
+        border: none;
+        padding: 12px;
+        border-radius: 10px;
+        transition: 0.2s;
+    }
+
+    .btn-reserve:hover {
+        background-color: #f6ad55;
+        transform: translateY(-2px);
+    }
+
+    .date-box {
+        background-color: #f7fafc;
+        padding: 12px;
+        border-radius: 12px;
+        border-left: 4px solid var(--travel-blue);
+        font-size: 0.85rem;
+    }
+</style>
+
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="fw-bold display-5" style="color: #2d3748;">Каталог Екскурзии</h1>
+        <p class="text-muted fs-5">Избери своята дестинация и ценови диапазон</p>
+    </div>
+
+    <div class="filter-section">
+        <form asp-controller="Holiday" asp-action="Index" method="get" class="row g-3 align-items-end">
+            <div class="col-xl-3 col-md-6">
+                <label class="form-label fw-bold text-uppercase small text-secondary">
+                    <i class="bi bi-geo-alt-fill me-1 text-primary"></i> Държава
+                </label>
+                <select name="countryId" class="form-select shadow-none py-2 border-0 bg-light" onchange="this.form.submit()">
+                    <option value="">-- Всички --</option>
+                    @if (ViewBag.Countries != null)
+                    {
+                        foreach (var c in ViewBag.Countries)
+                        {
+                                    <!option value="@c.Id" @(ViewBag.SelectedCountry?.ToString() == c.Id.ToString() ? "selected" : "")>
+                                @c.Name
+                                    </!option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-xl-3 col-md-6">
+                <label class="form-label fw-bold text-uppercase small text-secondary">
+                    <i class="bi bi-clock-history me-1 text-primary"></i> Тип престой
+                </label>
+                <select name="categoryId" class="form-select shadow-none py-2 border-0 bg-light" onchange="this.form.submit()">
+                    <option value="">-- Всички --</option>
+                    @if (ViewBag.Categories != null)
+                    {
+                        foreach (var cat in ViewBag.Categories)
+                        {
+                                    <!option value="@cat.Id" @(ViewBag.SelectedCategory?.ToString() == cat.Id.ToString() ? "selected" : "")>
+                                @cat.Name
+                                    </!option>
+                        }
+                    }
+                </select>
+            </div>
+
+            <div class="col-xl-2 col-md-6">
+                <label class="form-label fw-bold text-uppercase small text-secondary">Мин. цена</label>
+                <input type="number" name="minPrice" class="form-control border-0 bg-light py-2" 
+                       placeholder="От лв." value="@ViewBag.MinPrice" />
+            </div>
+
+            <div class="col-xl-2 col-md-6">
+                <label class="form-label fw-bold text-uppercase small text-secondary">Макс. цена</label>
+                <input type="number" name="maxPrice" class="form-control border-0 bg-light py-2" 
+                       placeholder="До лв." value="@ViewBag.MaxPrice" />
+            </div>
+
+            <div class="col-xl-2 col-md-12 d-flex gap-2">
+                <button type="submit" class="btn btn-primary w-100 py-2 shadow-sm rounded-3">
+                    <i class="bi bi-search"></i>
+                </button>
+                <a asp-action="Index" class="btn btn-outline-secondary py-2 shadow-sm rounded-3" title="Изчисти">
+                    <i class="bi bi-arrow-counterclockwise"></i>
+                </a>
+            </div>
+        </form>
+    </div>
+
+    @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
+    {
+            <div class="mb-4 text-end">
+                <a asp-action="Create" class="btn btn-dark shadow-sm rounded-pill px-4 py-2">
+                    <i class="bi bi-plus-lg me-2"></i>Добави Нов Холидей
+                </a>
+            </div>
+    }
+
+    <div class="row g-4">
+        @foreach (var item in Model)
+        {
+                <div class="col-xl-3 col-lg-4 col-md-6">
+                    <div class="card tour-card shadow-sm">
+                        <div class="image-container">
+                            <img src="@item.Picture" class="tour-img" alt="@item.HolidayName">
+
+                            <span class="badge-duration shadow-sm">
+                            @item.CategoryName
+                            </span>
+
+                        @if (item.Discount > 0)
+                        {
+                                    <span class="badge-discount">-@item.Discount%</span>
+                        }
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            var favoriteIds = ViewBag.FavoriteHolidayIds as List<int> ?? new List<int>();
+                            bool isFavorite = favoriteIds.Contains(item.Id);
+
+                                    <form asp-controller="Favorite" asp-action="Toggle" asp-route-holidayId="@item.Id" method="post"
+                                          class="position-absolute" style="top: 55px; right: 15px; z-index: 10;">
+                                        <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
+                                                style="width: 35px; height: 35px; border: none;">
+                                    @if (isFavorite)
+                                    {
+                                                    <i class="bi bi-heart-fill text-danger"></i>
+                                    }
+                                    else
+                                    {
+                                                    <i class="bi bi-heart text-secondary"></i>
+                                    }
+                                        </button>
+                                    </form>
+                        }
+                        </div>
+
+                        <div class="card-body d-flex flex-column p-4">
+                            <div class="mb-3">
+                                <small class="text-primary fw-bold text-uppercase" style="letter-spacing: 1px;">@item.CountryName</small>
+                                <h5 class="fw-bold mt-1 mb-0" style="color: #2d3748;">@item.HolidayName</h5>
+                            </div>
+
+                            <div class="date-box mb-3">
+                                <div class="mb-1 text-nowrap">
+                                    <i class="bi bi-calendar-event text-primary me-2"></i>
+                                    <strong>@item.DepartureTime.ToString("dd.MM.yyyy")</strong>
+                                </div>
+                                <div class="text-nowrap">
+                                    <i class="bi bi-calendar-check text-success me-2"></i>
+                                    <strong>@item.ArrivalDate.ToString("dd.MM.yyyy")</strong>
+                                </div>
+                            </div>
+
+                            <p class="text-muted small mb-4">
+                            @(item.Description?.Length > 75 ? item.Description.Substring(0, 75) + "..." : item.Description)
+                            </p>
+
+                            <div class="mt-auto border-top pt-3 d-flex justify-content-between align-items-center">
+                                <div>
+                                    <span class="h4 fw-bold text-dark mb-0">@item.Price лв.</span>
+                                    <div class="text-muted" style="font-size: 0.7rem;">Места: @item.Quantity</div>
+                                </div>
+                                <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-outline-dark rounded-pill px-3">Детайли</a>
+                            </div>
+
+                        @if (User.Identity?.IsAuthenticated == true)
+                        {
+                                            <a asp-action="Create" asp-controller="Reservation" asp-route-id="@item.Id" class="btn btn-reserve w-100 mt-3 shadow-sm">
+                                        РЕЗЕРВИРАЙ
+                                    </a>
+                        }
+
+                        @if (User.Identity?.IsAuthenticated == true && User.IsInRole("Administrator"))
+                        {
+                                    <div class="mt-3 pt-2 border-top d-flex justify-content-around">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-link btn-sm text-warning p-0 text-decoration-none fw-bold">Редакция</a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-link btn-sm text-danger p-0 text-decoration-none fw-bold">Изтрий</a>
+                                    </div>
+                        }
+                        </div>
+                    </div>
+                </div>
+        }
+    </div>
+</div>

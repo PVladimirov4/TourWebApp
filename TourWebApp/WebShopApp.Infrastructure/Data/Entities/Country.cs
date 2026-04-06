@@ -16,6 +16,6 @@ namespace TourWebApp.Infrastructure.Data.Entities
         [MaxLength(30)]
 
         public string CountryName { get; set; } = null!;
-        public virtual IEnumerable<Product> Products { get; set; } = new List<Product>();
+        public virtual IEnumerable<Holiday> Holidays { get; set; } = new List<Holiday>();
     }
 }

@@ -1,0 +1,161 @@
+﻿@model TourWebApp.Models.Holiday.HolidayDeleteVM
+@{
+    ViewData["Title"] = "Изтриване на оферта";
+}
+
+<style>
+    .delete-wrapper {
+        max-width: 900px;
+        margin: 40px auto;
+    }
+
+    .delete-card {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        overflow: hidden;
+        border: none;
+    }
+
+    .warning-banner {
+        background: #fff5f5;
+        color: #c53030;
+        padding: 20px;
+        border-bottom: 1px solid #feb2b2;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+    }
+
+    .holiday-preview-img {
+        width: 100%;
+        max-height: 300px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .info-label {
+        font-weight: 700;
+        color: #718096;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+    }
+
+    .info-value {
+        font-size: 1.1rem;
+        color: #2d3748;
+        margin-bottom: 15px;
+    }
+
+    .price-tag-delete {
+        background: #edf2f7;
+        padding: 15px;
+        border-radius: 12px;
+        display: inline-block;
+        min-width: 150px;
+    }
+
+    .footer-actions {
+        background: #f8fafc;
+        padding: 30px;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .btn-delete-final {
+        background: #e53e3e;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 10px;
+        font-weight: 700;
+        transition: all 0.3s;
+    }
+
+    .btn-delete-final:hover {
+        background: #c53030;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(229, 62, 62, 0.4);
+        color: white;
+    }
+</style>
+
+<div class="container delete-wrapper">
+    <div class="delete-card">
+        <div class="warning-banner text-center">
+            <i class="bi bi-exclamation-octagon-fill fs-2"></i>
+            <h4 class="mb-0 fw-bold">Внимание: Изтриване на дестинация!</h4>
+        </div>
+
+        <div class="p-4 p-md-5">
+            <div class="row g-4">
+                <div class="col-md-5">
+                    <div class="info-label mb-2">Снимка на офертата</div>
+                    <img src="@Model.Picture" alt="@Model.HolidayName" class="holiday-preview-img" />
+
+                    <div class="mt-4 p-3 border rounded-3 bg-light">
+                        <div class="info-label">Статус на наличност</div>
+                        <div class="h4 mb-0 text-dark">@Model.Quantity места</div>
+                    </div>
+                </div>
+
+                <div class="col-md-7">
+                    <div class="info-label">Наименование</div>
+                    <div class="info-value fw-bold text-primary text-uppercase">@Model.HolidayName</div>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="info-label">Държава</div>
+                            <div class="info-value">@Model.CountryName</div>
+                        </div>
+                        <div class="col-6">
+                            <div class="info-label">Категория</div>
+                            <div class="info-value">@Model.CategoryName</div>
+                        </div>
+                    </div>
+
+                    <hr />
+
+                    <div class="d-flex gap-3 mt-3">
+                        <div class="price-tag-delete">
+                            <div class="info-label">Базова цена</div>
+                            <div class="h5 mb-0 text-dark">@Model.Price лв.</div>
+                        </div>
+                        <div class="price-tag-delete border-start border-danger border-4">
+                            <div class="info-label">Отстъпка</div>
+                            <div class="h5 mb-0 text-danger">-@Model.Discount%</div>
+                        </div>
+                    </div>
+
+                    <p class="mt-4 text-muted small italic">
+                        * Изтриването на тази оферта може да доведе до проблеми с показването на исторически данни за стари резервации.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary px-4 rounded-pill">
+                <i class="bi bi-arrow-left me-2"></i>Отказ
+            </a>
+
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+                <button type="submit" class="btn-delete-final shadow">
+                    <i class="bi bi-trash3 me-2"></i>ПОТВЪРДИ ИЗТРИВАНЕТО
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

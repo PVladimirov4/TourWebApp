@@ -1,0 +1,168 @@
+﻿@model TourWebApp.Models.Reservation.ReservationCreateVM
+@{
+    ViewData["Title"] = "Резервация";
+}
+
+<style>
+    .checkout-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+        overflow: hidden;
+        margin-top: 30px;
+    }
+
+    .holiday-preview {
+        background: #f8f9fa;
+        padding: 30px;
+        border-right: 1px solid #eee;
+    }
+
+    .preview-img {
+        width: 100%;
+        height: 250px;
+        object-fit: cover;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .form-section {
+        padding: 40px;
+    }
+
+    .price-display {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #2d3748;
+    }
+
+    .total-box {
+        background: #ebf8ff;
+        padding: 20px;
+        border-radius: 12px;
+        border: 2px dashed #4299e1;
+    }
+
+    .btn-reserve {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        border: none;
+        padding: 12px;
+        font-weight: bold;
+        transition: transform 0.2s;
+    }
+
+        .btn-reserve:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(118, 75, 162, 0.4);
+        }
+
+    .readonly-input {
+        background-color: transparent !important;
+        border: none;
+        font-weight: 600;
+        padding: 0;
+        font-size: 1.1rem;
+    }
+</style>
+
+<div class="container py-4">
+    <div class="checkout-container mx-auto" style="max-width: 900px;">
+        <div class="row g-0">
+            <div class="col-md-5 holiday-preview text-center">
+                <img src="@Model.Picture" class="preview-img mb-3" alt="Holiday">
+                <h3 class="fw-bold">@Model.HolidayName</h3>
+                <hr />
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Цена на човек:</span>
+                    <span class="fw-bold">@Model.Price лв.</span>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span class="text-muted">Отстъпка:</span>
+                    <span class="text-danger fw-bold">@Model.Discount%</span>
+                </div>
+                <div class="mt-4 p-2 bg-white rounded shadow-sm">
+                    <small class="text-muted d-block">Налични места:</small>
+                    <span class="badge bg-success">@Model.QuantityInStock свободни</span>
+                </div>
+            </div>
+
+            <div class="col-md-7 form-section">
+                <h2 class="mb-4 fw-bold">Детайли за резервация</h2>
+
+                <form asp-action="Create">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+                    <input type="hidden" asp-for="HolidayId" />
+                    <input type="hidden" asp-for="HolidayName" />
+                    <input type="hidden" asp-for="Picture" />
+                    <input type="hidden" asp-for="Price" />
+                    <input type="hidden" asp-for="Discount" />
+
+                    <div class="mb-4">
+                        <label class="form-label fw-bold text-muted">Брой туристи:</label>
+                        <div class="input-group input-group-lg">
+                            <span class="input-group-text bg-white"><i class="bi bi-people"></i></span>
+                            <input asp-for="Quantity" class="form-control"
+                                   id="QuantityInput"
+                                   type="number"
+                                   oninput="calcSum()"
+                                   placeholder="Колко човека?" />
+                        </div>
+                        <span asp-validation-for="Quantity" class="text-danger small"></span>
+                    </div>
+
+                    <div class="total-box mb-4 text-center">
+                        <label class="text-uppercase small fw-bold text-primary d-block mb-1">Крайна сума за плащане</label>
+                        <div class="d-flex justify-content-center align-items-center">
+                            <input asp-for="TotalPrice" id="TotalPriceInput"
+                                   class="form-control readonly-input text-center w-50"
+                                   readonly />
+                            <span class="h4 mb-0 fw-bold text-primary">лв.</span>
+                        </div>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <button type="submit" class="btn btn-primary btn-reserve rounded-pill">
+                            <i class="bi bi-credit-card me-2"></i>ПОТВЪРДИ РЕЗЕРВАЦИЯТА
+                        </button>
+                        <a asp-action="Index" asp-controller="Holiday" class="btn btn-link text-muted mt-2">
+                            Отказ и връщане
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function calcSum() {
+        // Използваме ID-тата за по-сигурно
+        let q = document.getElementById('QuantityInput').value;
+        let p = @Model.Price;
+        let d = @Model.Discount;
+
+        if (q > 0) {
+            let priceAfterDiscount = p - (p * d / 100);
+            let sum = Number(q) * priceAfterDiscount;
+            document.getElementById('TotalPriceInput').value = sum.toFixed(2);
+        } else {
+            document.getElementById('TotalPriceInput').value = "0.00";
+        }
+    }
+
+    // Инициализация на лимитите
+    window.onload = function () {
+        let input = document.getElementById('QuantityInput');
+        input.max = @Model.QuantityInStock;
+        input.min = 1;
+        if (input.value == 0) input.value = 1;
+        calcSum(); // Изчисли първоначално
+    };
+</script>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

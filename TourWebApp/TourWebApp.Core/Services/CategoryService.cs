@@ -27,9 +27,9 @@ namespace TourWebApp.Core.Services
             List<Category> categories = _context.Categories.ToList();
             return categories;
         }
-        public List<Product> GetProductByCategory(int categoryId)
+        public List<Holiday> GetHolidayByCategory(int categoryId)
         {
-            return _context.Products.Where(x => x.CategoryId == categoryId).ToList();
+            return _context.Holidays.Where(x => x.CategoryId == categoryId).ToList();
         }
     }
 }

@@ -12,6 +12,6 @@ namespace TourWebApp.Core.Contracts
     {
         List<Category> GetCategories();
         Category GetCategoryById(int categoryId);
-        List<Product> GetProductByCategory(int categoryId);
+        List<Holiday> GetHolidayByCategory(int categoryId);
     }
 }

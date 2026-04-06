@@ -18,7 +18,7 @@ public class FavoriteController : Controller
     // ТОВА Е МЕТОДЪТ TOGGLE
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Toggle(int productId)
+    public async Task<IActionResult> Toggle(int holidayId)
     {
         // 1. Вземаме ID-то на текущия логнат потребител
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
@@ -27,7 +27,7 @@ public class FavoriteController : Controller
 
         // 2. Проверяваме дали този запис вече съществува в базата
         var favorite = await _context.Favorites
-            .FirstOrDefaultAsync(f => f.UserId == userId && f.ProductId == productId);
+            .FirstOrDefaultAsync(f => f.UserId == userId && f.HolidayId == holidayId);
 
         if (favorite != null)
         {
@@ -40,7 +40,7 @@ public class FavoriteController : Controller
             _context.Favorites.Add(new Favorite
             {
                 UserId = userId,
-                ProductId = productId
+                HolidayId = holidayId
             });
         }
 
@@ -56,9 +56,9 @@ public class FavoriteController : Controller
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
 
         var myFavorites = await _context.Favorites
-            .Include(f => f.Product) // Зареждаме данните за продукта
+            .Include(f => f.Holiday) // Зареждаме данните за продукта
             .Where(f => f.UserId == userId)
-            .Select(f => f.Product) // Вземаме само продуктите
+            .Select(f => f.Holiday) // Вземаме само продуктите
             .ToListAsync();
 
         return View(myFavorites);

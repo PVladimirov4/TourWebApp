@@ -14,12 +14,12 @@ namespace TourWebApp.Controllers
     public class ClientController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
-        private readonly IOrderService _orderService;
+        private readonly IReservationService _reservationService;
 
-        public ClientController(UserManager<ApplicationUser> userManager, IOrderService orderService)
+        public ClientController(UserManager<ApplicationUser> userManager, IReservationService reservationService)
         {
             this._userManager = userManager;
-            this._orderService = orderService;
+            this._reservationService = reservationService;
         }
         // GET: ClientController
         public async Task<ActionResult> Index()
@@ -110,8 +110,8 @@ namespace TourWebApp.Controllers
             {
                 return NotFound();
             }
-            var orders = _orderService.GetOrdersByUser(id);
-            if(orders.Count > 0)
+            var reservations = _reservationService.GetReservationsByUser(id);
+            if(reservations.Count > 0)
             {
                 return RedirectToAction("DeleteError");
             }

@@ -1,4 +1,4 @@
-﻿@model TourWebApp.Models.Product.ProductDetailsVM
+﻿@model TourWebApp.Models.Holiday.HolidayDetailsVM
 @{
     ViewData["Title"] = "Tour Details";
 }
@@ -107,7 +107,7 @@
     <div class="details-container shadow">
         <div class="row g-0">
             <div class="col-lg-6 overflow-hidden">
-                <img src="@Model.Picture" class="details-img" alt="@Model.ProductName">
+                <img src="@Model.Picture" class="details-img" alt="@Model.HolidayName">
             </div>
 
             <div class="col-lg-6">
@@ -117,7 +117,7 @@
                         <i class="bi bi-geo-alt-fill me-1"></i> @Model.CountryName
                     </span>
 
-                    <h1 class="tour-title">@Model.ProductName</h1>
+                    <h1 class="tour-title">@Model.HolidayName</h1>
                     
                     <div class="badge bg-light text-primary border px-3 py-2 rounded-pill mb-4">
                         <i class="bi bi-tag-fill me-1"></i> @Model.CategoryName
@@ -171,7 +171,7 @@
                     <div class="d-grid gap-3 mt-5">
                         @if (User.Identity?.IsAuthenticated == true)
                         {
-                            <a asp-action="Create" asp-controller="Order" asp-route-id="@Model.Id" class="btn btn-book btn-lg border-0 shadow-sm">
+                                <a asp-action="Create" asp-controller="Reservation" asp-route-id="@Model.Id" class="btn btn-book btn-lg border-0 shadow-sm">
                                 BOOK THIS JOURNEY NOW
                             </a>
                         }

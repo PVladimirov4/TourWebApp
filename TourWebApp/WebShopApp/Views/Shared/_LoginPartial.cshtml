@@ -3,25 +3,91 @@
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
-<ul class="navbar-nav">
-@if (SignInManager.IsSignedIn(User))
-{
-    <li class="nav-item">
-        <a  class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity?.Name!</a>
-    </li>
-    <li class="nav-item">
-        <form  class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-            <button  type="submit" class="nav-link btn btn-link text-dark">Logout</button>
-        </form>
-    </li>
-}
-else
-{
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
-    </li>
-}
+<style>
+    .auth-nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+
+    /* Стил за името на потребителя */
+    .user-greeting {
+        font-weight: 600;
+        color: #4b5563 !important;
+        display: flex;
+        align-items: center;
+        background: #f1f5f9;
+        padding: 6px 15px;
+        border-radius: 50px;
+        transition: all 0.2s;
+    }
+
+    .user-greeting:hover {
+        background: #e2e8f0;
+        color: #2563eb !important;
+    }
+
+    /* Стил за Logout бутона */
+    .btn-logout-custom {
+        font-weight: 500;
+        color: #ef4444 !important; /* Червен цвят за изход */
+        padding: 8px 15px !important;
+        border-radius: 10px;
+        transition: all 0.2s;
+    }
+
+    .btn-logout-custom:hover {
+        background: #fef2f2;
+    }
+
+    /* Бутон за регистрация */
+    .btn-register-custom {
+        background: #2563eb;
+        color: white !important;
+        font-weight: 600;
+        padding: 8px 20px !important;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+        transition: all 0.3s;
+    }
+
+    .btn-register-custom:hover {
+        background: #1d4ed8;
+        transform: translateY(-1px);
+        box-shadow: 0 6px 15px rgba(37, 99, 235, 0.3);
+    }
+
+    .btn-login-custom {
+        font-weight: 600;
+        color: #4b5563 !important;
+        padding: 8px 15px !important;
+    }
+</style>
+
+<ul class="navbar-nav auth-nav">
+    @if (SignInManager.IsSignedIn(User))
+    {
+        <li class="nav-item">
+            <a class="nav-link user-greeting" asp-area="Identity" asp-page="/Account/Manage/Index" title="Профил">
+                <i class="bi bi-person-circle me-2"></i>
+                <span>Здравей, @(User.Identity?.Name?.Split('@')[0])!</span>
+            </a>
+        </li>
+        <li class="nav-item">
+            <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                <button type="submit" class="nav-link btn btn-link btn-logout-custom">
+                    <i class="bi bi-box-arrow-right me-1"></i> Изход
+                </button>
+            </form>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link btn-login-custom" asp-area="Identity" asp-page="/Account/Login">Вход</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link btn-register-custom" asp-area="Identity" asp-page="/Account/Register">Регистрация</a>
+        </li>
+    }
 </ul>

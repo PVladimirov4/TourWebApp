@@ -1,15 +1,15 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TourWebApp.Models.Order
+namespace TourWebApp.Models.Reservation
 {
-    public class OrderCreateVM
+    public class ReservationCreateVM
     {
         public int Id { get; set; }
 
-        public DateTime OrderDate { get; set; }
+        public DateTime ReservationDate { get; set; }
 
-        public int ProductId { get; set; }
-        public string ProductName { get; set; } = null!;
+        public int HolidayId { get; set; }
+        public string HolidayName { get; set; } = null!;
         public int QuantityInStock { get; set; }
         public string Picture { get; set; }
 

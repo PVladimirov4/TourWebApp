@@ -41,8 +41,8 @@
                 color: #a71d2a !important;
             }
 
-        /* Стил за My Order */
-        .nav-orders {
+        /* Стил за My Reservation */
+        .nav-reservations {
             color: #198754 !important; /* Зелен цвят */
             background: rgba(25, 135, 84, 0.05);
             border-radius: 8px;
@@ -80,7 +80,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Product" asp-action="Index">Products</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Holiday" asp-action="Index">Holidays</a>
                         </li>
 
                         <li class="nav-item dropdown ms-2">
@@ -89,9 +89,9 @@
                                 Countries
                             </button>
                             <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownCountries">
-                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-countryId="1">Bulgaria</a></li>
-                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-countryId="2">Serbia</a></li>
-                                <li><a class="dropdown-item" asp-controller="Product" asp-action="Index" asp-route-countryId="3">Greece</a></li>
+                                <li><a class="dropdown-item" asp-controller="Holiday" asp-action="Index" asp-route-countryId="1">Bulgaria</a></li>
+                                <li><a class="dropdown-item" asp-controller="Holiday" asp-action="Index" asp-route-countryId="2">Serbia</a></li>
+                                <li><a class="dropdown-item" asp-controller="Holiday" asp-action="Index" asp-route-countryId="3">Greece</a></li>
                             </ul>
                         </li>
 
@@ -104,8 +104,8 @@
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link nav-orders" asp-area="" asp-controller="Order" asp-action="MyOrders">
-                                    <i class="bi bi-bag-check-fill me-1"></i> My Orders
+                                <a class="nav-link nav-orders" asp-area="" asp-controller="Reservation" asp-action="MyReservations">
+                                    <i class="bi bi-bag-check-fill me-1"></i> My Reservations
                                 </a>
                             </li>
                         }
@@ -122,7 +122,7 @@
                                 </button>
                                 <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownAdmin">
                                     <li><a class="dropdown-item" href="/Client/Index"><i class="bi bi-people me-2"></i>Clients</a></li>
-                                    <li><a class="dropdown-item" href="/Order/Index"><i class="bi bi-cart me-2"></i>Orders</a></li>
+                                        <li><a class="dropdown-item" href="/Reservation/Index"><i class="bi bi-cart me-2"></i>Reservations</a></li>
                                 </ul>
                             </li>
                         }

@@ -3,17 +3,17 @@
 using TourWebApp.Models.country;
 using TourWebApp.Models.Category;
 
-namespace TourWebApp.Models.Product
+namespace TourWebApp.Models.Holiday
 {
-    public class ProductEditVM
+    public class HolidayCreateVM
     {
         [Key]
         public int Id { get; set; }
 
         [Required]
         [MaxLength(30)]
-        [Display(Name = "Product Name")]
-        public string ProductName { get; set; } = null!;
+        [Display(Name = "Holiday Name")]
+        public string HolidayName { get; set; } = null!;
 
         [Required]
         [Display(Name = "Country")]
@@ -29,13 +29,13 @@ namespace TourWebApp.Models.Product
         public string Picture { get; set; } = null!;
 
         [Required]
-        [Display(Name = "Дата на тръгване")]
+        [Display(Name = "DepartureTime")]
         [DataType(DataType.DateTime)]
         public DateTime DepartureTime { get; set; }
 
-        [Required]
-        [Display(Name = "Дата на пристигане")]
-        [DataType(DataType.Date)]
+        [Required]       
+        [Display(Name = "ArrivalTime")]
+        [DataType(DataType.DateTime)]
         public DateTime ArrivalDate { get; set; }
 
         [Range(0, 5000)]

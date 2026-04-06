@@ -1,4 +1,4 @@
-﻿@model IEnumerable<TourWebApp.Infrastructure.Data.Entities.Product>
+﻿@model IEnumerable<TourWebApp.Infrastructure.Data.Entities.Holiday>
 
 <style>
     .tour-card {
@@ -53,7 +53,7 @@
         <div class="alert alert-light border text-center py-5 shadow-sm">
             <i class="bi bi-geo-alt fs-1 text-muted d-block mb-3"></i>
             <p class="mb-0">Все още нямате добавени любими екскурзии.</p>
-            <a asp-controller="Product" asp-action="Index" class="btn btn-primary mt-3 rounded-pill">Разгледай каталога</a>
+            <a asp-controller="Holiday" asp-action="Index" class="btn btn-primary mt-3 rounded-pill">Разгледай каталога</a>
         </div>
     }
     else
@@ -65,9 +65,9 @@
                     <div class="card tour-card shadow-sm h-100">
 
                         <div class="image-wrapper">
-                            <img src="@item.Picture" class="favorite-img" alt="@item.ProductName">
+                            <img src="@item.Picture" class="favorite-img" alt="@item.HolidayName">
 
-                            <form asp-controller="Favorite" asp-action="Toggle" asp-route-productId="@item.Id" method="post">
+                            <form asp-controller="Favorite" asp-action="Toggle" asp-route-holidayId="@item.Id" method="post">
                                 <button type="submit" class="remove-btn shadow">
                                     <i class="bi bi-x-lg"></i>
                                 </button>
@@ -75,11 +75,11 @@
                         </div>
 
                         <div class="card-body p-3">
-                            <h6 class="fw-bold mb-1">@item.ProductName</h6>
+                            <h6 class="fw-bold mb-1">@item.HolidayName</h6>
                             <p class="text-primary fw-bold mb-3">@item.Price лв.</p>
 
                             <div class="d-grid gap-2">
-                                <a asp-controller="Product" asp-action="Details" asp-route-id="@item.Id"
+                                <a asp-controller="Holiday" asp-action="Details" asp-route-id="@item.Id"
                                    class="btn btn-sm btn-outline-dark rounded-pill">Детайли</a>
                             </div>
                         </div>

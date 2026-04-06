@@ -1,47 +1,120 @@
 ﻿@model TourWebApp.Models.Client.ClientDeleteVM
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Изтриване на клиент";
 }
-<h1>Delete</h1>
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>ClientDeleteVM</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.UserName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.UserName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.FirstName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.FirstName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.LastName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.LastName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index" class="btn btn-warning">Back to List</a>
-    </form>
+
+<style>
+    .delete-container {
+        max-width: 800px;
+        margin-top: 50px;
+    }
+
+    .warning-card {
+        background: #fff;
+        border-radius: 20px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        border: 1px solid #fee2e2;
+        overflow: hidden;
+    }
+
+    .warning-header {
+        background-color: #fef2f2;
+        padding: 30px;
+        text-align: center;
+        border-bottom: 1px solid #fee2e2;
+    }
+
+    .warning-icon {
+        font-size: 50px;
+        color: #dc2626;
+        margin-bottom: 15px;
+    }
+
+    .client-details {
+        padding: 40px;
+    }
+
+    .detail-row {
+        display: flex;
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .detail-label {
+        font-weight: 700;
+        color: #6b7280;
+        width: 30%;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+    }
+
+    .detail-value {
+        color: #111827;
+        font-weight: 500;
+    }
+
+    .actions-box {
+        background: #f9fafb;
+        padding: 25px 40px;
+        text-align: right;
+    }
+
+    .btn-confirm-delete {
+        background-color: #dc2626;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 10px;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .btn-confirm-delete:hover {
+        background-color: #b91c1c;
+        transform: scale(1.02);
+    }
+</style>
+
+<div class="container delete-container">
+    <div class="warning-card">
+        <div class="warning-header">
+            <div class="warning-icon">
+                <i class="bi bi-person-x-fill"></i>
+            </div>
+            <h2 class="fw-bold text-danger">Изтриване на клиент</h2>
+            <p class="text-muted mb-0">Сигурни ли сте, че искате да премахнете този потребител от системата? Това действие е необратимо.</p>
+        </div>
+
+        <div class="client-details">
+            <div class="detail-row">
+                <div class="detail-label">Потребителско име</div>
+                <div class="detail-value">@Model.UserName</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Имена</div>
+                <div class="detail-value">@Model.FirstName @Model.LastName</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Имейл адрес</div>
+                <div class="detail-value text-primary">@Model.Email</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Адрес</div>
+                <div class="detail-value">@Model.Address</div>
+            </div>
+        </div>
+
+        <div class="actions-box">
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="Id" />
+
+                <a asp-action="Index" class="btn btn-link text-muted text-decoration-none me-3">
+                    <i class="bi bi-arrow-left me-1"></i> Отказ и връщане
+                </a>
+
+                <button type="submit" class="btn btn-danger btn-confirm-delete shadow">
+                    <i class="bi bi-trash3 me-2"></i> ИЗТРИЙ ЗАВИНАГИ
+                </button>
+            </form>
+        </div>
+    </div>
 </div>

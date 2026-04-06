@@ -1,27 +1,32 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace TourWebApp.Models.Product
+using TourWebApp.Models.country;
+using TourWebApp.Models.Category;
+
+namespace TourWebApp.Models.Holiday
 {
-    public class ProductIndexVM
+    public class HolidayEditVM
     {
         [Key]
         public int Id { get; set; }
 
-        [Display(Name = "Product Name")]
-        public string ProductName { get; set; }
+        [Required]
+        [MaxLength(30)]
+        [Display(Name = "Holiday Name")]
+        public string HolidayName { get; set; } = null!;
 
-        public int CountryId { get; set; }
-
+        [Required]
         [Display(Name = "Country")]
-        public string CountryName { get; set; }
+        public int CountryId { get; set; }
+        public virtual List<CountryPairVM> Countrys { get; set; } = new List<CountryPairVM>();
 
-        public int CategoryId { get; set; }
-
+        [Required]
         [Display(Name = "Category")]
-        public string CategoryName { get; set; }
+        public int CategoryId { get; set; }
+        public virtual List<CategoryPairVM> Categories { get; set; } = new List<CategoryPairVM>();
 
         [Display(Name = "Picture")]
-        public string Picture { get; set; }
+        public string Picture { get; set; } = null!;
 
         [Required]
         [Display(Name = "Дата на тръгване")]
@@ -33,6 +38,7 @@ namespace TourWebApp.Models.Product
         [DataType(DataType.Date)]
         public DateTime ArrivalDate { get; set; }
 
+        [Range(0, 5000)]
         [Display(Name = "Quantity")]
         public int Quantity { get; set; }
 
