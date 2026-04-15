@@ -1,7 +1,7 @@
 ﻿@model TourWebApp.Models.Holiday.HolidayCreateVM
 
 @{
-    ViewData["Title"] = "Create Tour Package";
+    ViewData["Title"] = "Създаване на екскурзия";
 }
 
 <style>
@@ -38,11 +38,11 @@
         transition: all 0.2s ease-in-out;
     }
 
-    .form-control:focus, .form-select:focus {
-        border-color: #007bff;
-        box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.1);
-        background-color: #fff;
-    }
+        .form-control:focus, .form-select:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.25rem rgba(0, 123, 255, 0.1);
+            background-color: #fff;
+        }
 
     .input-group-text {
         background-color: #f8f9fa;
@@ -60,11 +60,11 @@
         transition: all 0.3s ease;
     }
 
-    .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
-        filter: brightness(1.1);
-    }
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 123, 255, 0.3);
+            filter: brightness(1.1);
+        }
 
     .tour-section {
         background: #fafafa;
@@ -83,8 +83,8 @@
             <div class="card shadow-lg">
 
                 <div class="card-header text-white text-center">
-                    <h2 class="mb-0"><i class="bi bi-airplane-fill me-2"></i>Create New Tour Package</h2>
-                    <p class="mb-0 opacity-75">Fill in the details to launch a new destination</p>
+                    <h2 class="mb-0"><i class="bi bi-airplane-fill me-2"></i>Създаване на нова оферта</h2>
+                    <p class="mb-0 opacity-75">Попълнете детайлите, за да пуснете нова дестинация</p>
                 </div>
 
                 <div class="card-body p-4 p-md-5">
@@ -92,22 +92,22 @@
                         <div asp-validation-summary="ModelOnly" class="alert alert-danger mb-4" role="alert"></div>
 
                         <div class="tour-section shadow-sm">
-                            <h5 class="text-primary mb-4"><i class="bi bi-info-circle me-2"></i>General Information</h5>
+                            <h5 class="text-primary mb-4"><i class="bi bi-info-circle me-2"></i>Обща информация</h5>
 
                             <div class="mb-4">
-                                <label asp-for="HolidayName" class="form-label fw-bold small"></label>
+                                <label asp-for="HolidayName" class="form-label fw-bold small">Име на почивката</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-map"></i></span>
-                                    <input asp-for="HolidayName" class="form-control" placeholder="e.g. Weekend in Rome" />
+                                    <input asp-for="HolidayName" class="form-control" placeholder="напр. Уикенд в Рим" />
                                 </div>
                                 <span asp-validation-for="HolidayName" class="text-danger small"></span>
                             </div>
 
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label asp-for="CountryId" class="form-label fw-bold small"></label>
+                                    <label asp-for="CountryId" class="form-label fw-bold small">Държава</label>
                                     <select asp-for="CountryId" class="form-select">
-                                        <option value="">-- Choose Country --</option>
+                                        <option value="">-- Изберете държава --</option>
                                         @foreach (var country in Model.Countrys)
                                         {
                                             <option value="@country.Id">@country.Name</option>
@@ -116,9 +116,9 @@
                                     <span asp-validation-for="CountryId" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label asp-for="CategoryId" class="form-label fw-bold small"></label>
+                                    <label asp-for="CategoryId" class="form-label fw-bold small">Категория</label>
                                     <select asp-for="CategoryId" class="form-select">
-                                        <option value="">-- Choose Category --</option>
+                                        <option value="">-- Изберете категория --</option>
                                         @foreach (var category in Model.Categories)
                                         {
                                             <option value="@category.Id">@category.Name</option>
@@ -130,15 +130,15 @@
                         </div>
 
                         <div class="tour-section shadow-sm">
-                            <h5 class="text-primary mb-4"><i class="bi bi-calendar3 me-2"></i>Tour Schedule</h5>
+                            <h5 class="text-primary mb-4"><i class="bi bi-calendar3 me-2"></i>График на пътуването</h5>
                             <div class="row">
                                 <div class="col-md-6 mb-4">
-                                    <label asp-for="DepartureTime" class="form-label fw-bold small">Departure (Date & Time)</label>
+                                    <label asp-for="DepartureTime" class="form-label fw-bold small">Заминаване (Дата и час)</label>
                                     <input asp-for="DepartureTime" class="form-control" type="datetime-local" />
                                     <span asp-validation-for="DepartureTime" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label asp-for="ArrivalDate" class="form-label fw-bold small">Return Date</label>
+                                    <label asp-for="ArrivalDate" class="form-label fw-bold small">Дата на връщане</label>
                                     <input asp-for="ArrivalDate" class="form-control" type="date" />
                                     <span asp-validation-for="ArrivalDate" class="text-danger small"></span>
                                 </div>
@@ -146,18 +146,18 @@
                         </div>
 
                         <div class="tour-section shadow-sm">
-                            <h5 class="text-primary mb-4"><i class="bi bi-cash-stack me-2"></i>Pricing & Capacity</h5>
+                            <h5 class="text-primary mb-4"><i class="bi bi-cash-stack me-2"></i>Цени и капацитет</h5>
                             <div class="row">
                                 <div class="col-md-4 mb-4">
-                                    <label asp-for="Price" class="form-label fw-bold small"></label>
+                                    <label asp-for="Price" class="form-label fw-bold small">Цена</label>
                                     <div class="input-group">
-                                        <span class="input-group-text">$</span>
+                                        <span class="input-group-text">лв.</span>
                                         <input asp-for="Price" class="form-control" placeholder="0.00" />
                                     </div>
                                     <span asp-validation-for="Price" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-4 mb-4">
-                                    <label asp-for="Discount" class="form-label fw-bold small"></label>
+                                    <label asp-for="Discount" class="form-label fw-bold small">Отстъпка</label>
                                     <div class="input-group">
                                         <input asp-for="Discount" class="form-control" placeholder="0" />
                                         <span class="input-group-text">%</span>
@@ -165,14 +165,14 @@
                                     <span asp-validation-for="Discount" class="text-danger small"></span>
                                 </div>
                                 <div class="col-md-4 mb-4">
-                                    <label asp-for="Quantity" class="form-label fw-bold small">Available Spots</label>
-                                    <input asp-for="Quantity" class="form-control" placeholder="e.g. 20" />
+                                    <label asp-for="Quantity" class="form-label fw-bold small">Свободни места</label>
+                                    <input asp-for="Quantity" class="form-control" placeholder="напр. 20" />
                                     <span asp-validation-for="Quantity" class="text-danger small"></span>
                                 </div>
                             </div>
 
                             <div class="mb-4">
-                                <label asp-for="Picture" class="form-label fw-bold small">Cover Image Link</label>
+                                <label asp-for="Picture" class="form-label fw-bold small">Линк към водеща снимка</label>
                                 <div class="input-group">
                                     <span class="input-group-text"><i class="bi bi-link-45deg"></i></span>
                                     <input asp-for="Picture" class="form-control" placeholder="https://..." />
@@ -182,20 +182,20 @@
                         </div>
 
                         <div class="mb-4">
-                            <label asp-for="Description" class="form-label fw-bold"></label>
-                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Tell travelers what makes this tour special..."></textarea>
+                            <label asp-for="Description" class="form-label fw-bold">Описание на дестинацията</label>
+                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Разкажете на пътешествениците какво прави тази екскурзия специална..."></textarea>
                             <span asp-validation-for="Description" class="text-danger small"></span>
                         </div>
 
                         <div class="row mt-5">
                             <div class="col-md-6 mb-2">
                                 <a asp-action="Index" class="btn btn-outline-secondary w-100">
-                                    <i class="bi bi-arrow-left me-2"></i>Back to List
+                                    <i class="bi bi-arrow-left me-2"></i>Назад към списъка
                                 </a>
                             </div>
                             <div class="col-md-6">
                                 <button type="submit" class="btn btn-primary w-100">
-                                    <i class="bi bi-plus-lg me-2"></i>Create Tour
+                                    <i class="bi bi-plus-lg me-2"></i>Създай екскурзия
                                 </button>
                             </div>
                         </div>

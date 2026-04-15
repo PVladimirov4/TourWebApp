@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="bg">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -29,7 +29,7 @@
 
         /* Специфичен стил за Любими */
         .nav-favorites {
-            color: #dc3545 !important; /* Червен цвят */
+            color: #dc3545 !important;
             background: rgba(220, 53, 69, 0.05);
             border-radius: 8px;
             margin-left: 5px;
@@ -41,16 +41,20 @@
                 color: #a71d2a !important;
             }
 
-        /* Стил за My Reservation */
+        /* Стил за Моите резервации */
         .nav-reservations {
-            color: #198754 !important; /* Зелен цвят */
+            color: #198754 !important;
             background: rgba(25, 135, 84, 0.05);
             border-radius: 8px;
             margin-left: 5px;
             padding: 8px 12px !important;
         }
 
-        /* Оправяне на dropdown бутоните да не са грозни сиви */
+            .nav-reservations:hover {
+                background: rgba(25, 135, 84, 0.1);
+                color: #0f5132 !important;
+            }
+
         .btn-secondary.dropdown-toggle {
             background-color: transparent !important;
             color: #444 !important;
@@ -77,35 +81,23 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 align-items-center">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Начало</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Holiday" asp-action="Index">Holidays</a>
-                        </li>
-
-                        <li class="nav-item dropdown ms-2">
-                            <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" id="dropdownCountries"
-                                    data-bs-toggle="dropdown" aria-expanded="false">
-                                Countries
-                            </button>
-                            <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownCountries">
-                                <li><a class="dropdown-item" asp-controller="Holiday" asp-action="Index" asp-route-countryId="1">Bulgaria</a></li>
-                                <li><a class="dropdown-item" asp-controller="Holiday" asp-action="Index" asp-route-countryId="2">Serbia</a></li>
-                                <li><a class="dropdown-item" asp-controller="Holiday" asp-action="Index" asp-route-countryId="3">Greece</a></li>
-                            </ul>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Holiday" asp-action="Index">Екскурзии</a>
                         </li>
 
                         @if (this.User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
                                 <a class="nav-link nav-favorites" asp-controller="Favorite" asp-action="Index">
-                                    <i class="bi bi-heart-fill me-1"></i> Favorites
+                                    <i class="bi bi-heart-fill me-1"></i> Любими
                                 </a>
                             </li>
 
                             <li class="nav-item">
-                                <a class="nav-link nav-orders" asp-area="" asp-controller="Reservation" asp-action="MyReservations">
-                                    <i class="bi bi-bag-check-fill me-1"></i> My Reservations
+                                <a class="nav-link nav-reservations" asp-area="" asp-controller="Reservation" asp-action="MyReservations">
+                                    <i class="bi bi-bag-check-fill me-1"></i> Моите резервации
                                 </a>
                             </li>
                         }
@@ -118,11 +110,11 @@
                                         id="dropdownAdmin"
                                         data-bs-toggle="dropdown"
                                         aria-expanded="false">
-                                    <i class="bi bi-shield-lock me-1"></i> Admin Module
+                                    <i class="bi bi-shield-lock me-1"></i> Админ панел
                                 </button>
                                 <ul class="dropdown-menu shadow-sm border-0" aria-labelledby="dropdownAdmin">
-                                    <li><a class="dropdown-item" href="/Client/Index"><i class="bi bi-people me-2"></i>Clients</a></li>
-                                        <li><a class="dropdown-item" href="/Reservation/Index"><i class="bi bi-cart me-2"></i>Reservations</a></li>
+                                    <li><a class="dropdown-item" href="/Client/Index"><i class="bi bi-people me-2"></i>Клиенти</a></li>
+                                    <li><a class="dropdown-item" href="/Reservation/Index"><i class="bi bi-cart me-2"></i>Всички резервации</a></li>
                                 </ul>
                             </li>
                         }
@@ -142,7 +134,7 @@
     <footer class="border-top footer text-muted bg-white mt-5">
         <div class="container py-3 text-center">
             &copy; 2026 - <span class="fw-bold text-primary">WebShopApp</span> -
-            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none ms-2">Privacy Policy</a>
+            <a asp-area="" asp-controller="Home" asp-action="Privacy" class="text-decoration-none ms-2">Политика за поверителност</a>
         </div>
     </footer>
 
