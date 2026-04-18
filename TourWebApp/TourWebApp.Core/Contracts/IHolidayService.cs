@@ -23,5 +23,6 @@ namespace TourWebApp.Core.Contracts
         List<Holiday> GetHolidays(string searchStringCategoryName, string searchStringCountryName);
 
         List<Country> GetCountrys();
+        List<int> GetFavoriteIds(string userId);
     }
 }

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore; // ЗАДЪЛЖИТЕЛНО за Include
 using TourWebApp.Core.Contracts;
 using TourWebApp.Infrastructure.Data;
 using TourWebApp.Infrastructure.Data.Entities;
@@ -12,24 +10,25 @@ namespace TourWebApp.Core.Services
 {
     public class HolidayService : IHolidayService
     {
-
         private readonly ApplicationDbContext _context;
-        public List<Country> GetCountrys()
-        {
-            return _context.Countrys.ToList(); // Увери се, че името на таблицата е точно такова
-        }
 
         public HolidayService(ApplicationDbContext context)
         {
             _context = context;
         }
+
+        public List<Country> GetCountrys()
+        {
+            return _context.Countrys.ToList();
+        }
+
         public bool Create(string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
         {
             Holiday item = new Holiday
             {
                 HolidayName = name,
-                Country = _context.Countrys.Find(countryId),
-                Category = _context.Categories.Find(categoryId),
+                CountryId = countryId,
+                CategoryId = categoryId,
                 Picture = picture,
                 Quantity = quantity,
                 Price = price,
@@ -40,65 +39,64 @@ namespace TourWebApp.Core.Services
             };
 
             _context.Holidays.Add(item);
-            return _context.SaveChanges() != 0;
+            return _context.SaveChanges() > 0;
         }
 
         public Holiday GetHolidayById(int holidayId)
         {
-            return _context.Holidays.Find(holidayId);
+            // Използваме Include, за да не са null държавата и категорията в Details
+            return _context.Holidays
+                .Include(h => h.Country)
+                .Include(h => h.Category)
+                .FirstOrDefault(h => h.Id == holidayId);
         }
 
         public List<Holiday> GetHolidays()
         {
-            List<Holiday> holidays = _context.Holidays.ToList();
-            return holidays;
+            return _context.Holidays
+                .Include(h => h.Country)
+                .Include(h => h.Category)
+                .ToList();
         }
 
         public List<Holiday> GetHolidays(string searchStringCategoryName, string searchStringcountryName)
         {
-            List<Holiday> holidays = _context.Holidays.ToList();
-            if (!String.IsNullOrEmpty(searchStringCategoryName) && !String.IsNullOrEmpty(searchStringcountryName))
+            // Правим заявката към базата с включени обекти
+            var query = _context.Holidays
+                .Include(h => h.Country)
+                .Include(h => h.Category)
+                .AsQueryable();
+
+            if (!string.IsNullOrEmpty(searchStringCategoryName))
             {
-                holidays = holidays.Where(x =>
-              x.Category.CategoryName.ToLower().Contains   (searchStringCategoryName.ToLower())
-               && x.Country.CountryName.ToLower().Contains      (searchStringcountryName.ToLower())
-               ).ToList();
+                query = query.Where(x => x.Category.CategoryName.ToLower().Contains(searchStringCategoryName.ToLower()));
             }
-            else if (!String.IsNullOrEmpty(searchStringCategoryName))
+
+            if (!string.IsNullOrEmpty(searchStringcountryName))
             {
-                holidays = holidays.Where(x => x.Category.CategoryName.ToLower ().Contains (searchStringCategoryName.ToLower())).ToList();
+                query = query.Where(x => x.Country.CountryName.ToLower().Contains(searchStringcountryName.ToLower()));
             }
-            else if (!String.IsNullOrEmpty(searchStringcountryName))
-            {
-                holidays = holidays.Where(x => x.Country.CountryName.ToLower().Contains(searchStringcountryName.ToLower())).ToList();
-            } // ToList();
-            return holidays;
+
+            return query.ToList();
         }
-        
+
         public bool RemoveById(int holidayId)
         {
-            var holiday = GetHolidayById(holidayId);
-            if(holiday == default(Holiday)) return false;
-            _context.Remove(holiday);
-            return _context.SaveChanges() != 0;
+            var holiday = _context.Holidays.Find(holidayId);
+            if (holiday == null) return false;
+
+            _context.Holidays.Remove(holiday);
+            return _context.SaveChanges() > 0;
         }
 
         public bool Update(int holidayId, string name, int countryId, int categoryId, string picture, int quantity, decimal price, decimal discount, string description, DateTime departureTime, DateTime arrivalDate)
         {
-            var holiday = GetHolidayById(holidayId);
-            if (holiday == default(Holiday))
-            {
-                return false;
-            }
+            var holiday = _context.Holidays.Find(holidayId);
+            if (holiday == null) return false;
 
             holiday.HolidayName = name;
-
-            //holiday.countryId = countryId;
-            //holiday.CategoryId = categoryId;
-
-            holiday.Country = _context.Countrys.Find(countryId);
-            holiday.Category = _context.Categories.Find(categoryId);
-
+            holiday.CountryId = countryId; // Директно обновяваме външния ключ
+            holiday.CategoryId = categoryId; // Директно обновяваме външния ключ
             holiday.Picture = picture;
             holiday.Quantity = quantity;
             holiday.Price = price;
@@ -107,9 +105,16 @@ namespace TourWebApp.Core.Services
             holiday.DepartureTime = departureTime;
             holiday.ArrivalDate = arrivalDate;
 
-            _context.Update(holiday);
-            return _context.SaveChanges() != 0;
+            _context.Holidays.Update(holiday);
+            return _context.SaveChanges() > 0;
+        }
 
+        public List<int> GetFavoriteIds(string userId)
+        {
+            return _context.Favorites
+                .Where(f => f.UserId == userId)
+                .Select(f => f.HolidayId)
+                .ToList();
         }
     }
 }

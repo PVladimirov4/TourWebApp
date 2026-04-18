@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-
 using TourWebApp.Models.country;
 using TourWebApp.Models.Category;
 
@@ -7,48 +6,46 @@ namespace TourWebApp.Models.Holiday
 {
     public class HolidayCreateVM
     {
-        [Key]
         public int Id { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Името е задължително")]
         [MaxLength(30)]
-        [Display(Name = "Holiday Name")]
+        [Display(Name = "Име на почивката")]
         public string HolidayName { get; set; } = null!;
 
-        [Required]
-        [Display(Name = "Country")]
+        [Required(ErrorMessage = "Изберете държава")]
+        [Display(Name = "Държава")]
         public int CountryId { get; set; }
-        public virtual List<CountryPairVM> Countrys { get; set; } = new List<CountryPairVM>();
+        
+        // Махаме изискването за списъците
+        public virtual List<CountryPairVM>? Countrys { get; set; } = new List<CountryPairVM>();
 
-        [Required]
-        [Display(Name = "Category")]
+        [Required(ErrorMessage = "Изберете категория")]
+        [Display(Name = "Категория")]
         public int CategoryId { get; set; }
-        public virtual List<CategoryPairVM> Categories { get; set; } = new List<CategoryPairVM>();
+        public virtual List<CategoryPairVM>? Categories { get; set; } = new List<CategoryPairVM>();
 
-        [Display(Name = "Picture")]
+        [Required(ErrorMessage = "Снимката е задължителна")]
+        [Display(Name = "Линк към снимка")]
         public string Picture { get; set; } = null!;
 
         [Required]
-        [Display(Name = "DepartureTime")]
-        [DataType(DataType.DateTime)]
+        [Display(Name = "Заминаване")]
         public DateTime DepartureTime { get; set; }
 
-        [Required]       
-        [Display(Name = "ArrivalTime")]
-        [DataType(DataType.DateTime)]
+        [Required]
+        [Display(Name = "Връщане")]
         public DateTime ArrivalDate { get; set; }
 
-        [Range(0, 5000)]
-        [Display(Name = "Quantity")]
+        [Range(1, 5000, ErrorMessage = "Местата трябва да са между 1 и 5000")]
         public int Quantity { get; set; }
 
-        [Display(Name = "Price")]
+        [Range(0.01, 100000, ErrorMessage = "Цената трябва да е положително число")]
         public decimal Price { get; set; }
 
-        [Display(Name = "Discount")]
         public decimal Discount { get; set; }
 
-        [Display(Name = "Description")]
-        public string Description { get; set; }
+        [Required(ErrorMessage = "Описанието е задължително")]
+        public string Description { get; set; } = null!;
     }
 }
