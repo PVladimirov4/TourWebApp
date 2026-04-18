@@ -1,0 +1,199 @@
+﻿@{
+    ViewData["Title"] = "Контакти";
+}
+
+<style>
+    .contact-wrapper {
+        padding: 60px 0;
+        background-color: #f8fafc;
+    }
+
+    .contact-info-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        height: 100%;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .contact-form-card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    }
+
+    .info-item {
+        display: flex;
+        align-items: center;
+        margin-bottom: 25px;
+    }
+
+    .info-icon {
+        width: 50px;
+        height: 50px;
+        background: rgba(37, 99, 235, 0.1);
+        color: #2563eb;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        margin-right: 20px;
+    }
+
+    .info-text h5 {
+        margin-bottom: 2px;
+        font-weight: 700;
+        color: #1e293b;
+    }
+
+    .info-text p {
+        margin-bottom: 0;
+        color: #64748b;
+    }
+
+    .btn-send {
+        background: #2563eb;
+        color: white;
+        border: none;
+        padding: 12px 30px;
+        border-radius: 12px;
+        font-weight: 600;
+        transition: all 0.3s;
+    }
+
+        .btn-send:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+</style>
+
+<div class="contact-wrapper">
+    <div class="container">
+        <div class="text-center mb-5">
+            <h1 class="fw-bold text-dark">Свържете се с нас</h1>
+            <p class="text-muted">Имате въпроси относно вашата почивка? Ние сме тук, за да помогнем!</p>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-lg-5">
+                <div class="contact-info-card">
+                    <h3 class="fw-bold mb-4">Информация</h3>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-geo-alt-fill"></i>
+                        </div>
+                        <div class="info-text">
+                            <h5>Адрес</h5>
+                            <p>Монте Карло, ул. „8-ми март“ 232, 2306 Перник</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-telephone-fill"></i>
+                        </div>
+                        <div class="info-text">
+                            <h5>Телефон</h5>
+                            <p>+359 888 123 456</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-envelope-at-fill"></i>
+                        </div>
+                        <div class="info-text">
+                            <h5>Имейл</h5>
+                            <p>support@tourwebapp.com</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon">
+                            <i class="bi bi-clock-fill"></i>
+                        </div>
+                        <div class="info-text">
+                            <h5>Работно време</h5>
+                            <p>Пон - Пет: 09:00 - 18:00</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-7">
+                <div class="contact-form-card">
+                    <h3 class="fw-bold mb-4">Изпратете запитване</h3>
+                    <form id="contactForm">
+                        <div class="row g-3">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="text" class="form-control rounded-3" id="name" placeholder="Вашето име" required>
+                                    <label for="name">Вашето име</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3">
+                                    <input type="email" class="form-control rounded-3" id="email" placeholder="Имейл" required>
+                                    <label for="email">Имейл адрес</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input type="text" class="form-control rounded-3" id="subject" placeholder="Тема">
+                            <label for="subject">Тема</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <textarea class="form-control rounded-3" placeholder="Вашето съобщение" id="message" style="height: 150px" required></textarea>
+                            <label for="message">Съобщение</label>
+                        </div>
+                        <button type="button" class="btn btn-send w-100 shadow-sm" id="btnSubmit">
+                            <i class="bi bi-send me-2"></i> Изпрати съобщение
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        document.getElementById('btnSubmit').addEventListener('click', function (e) {
+            // Вземаме стойностите на полетата
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            // Базова проверка за празни полета
+            if (!name || !email || !message) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Внимание',
+                    text: 'Моля, попълнете име, имейл и съобщение!',
+                    confirmButtonColor: '#2563eb'
+                });
+                return;
+            }
+
+            // Симулиране на изпращане
+            Swal.fire({
+                icon: 'success',
+                title: 'Благодарим ви!',
+                text: 'Вашето съобщение беше изпратено успешно. Ще се свържем с вас скоро!',
+                confirmButtonColor: '#2563eb',
+                timer: 4000,
+                timerProgressBar: true
+            }).then(() => {
+                // Изчистване на формата и пренасочване към началната страница
+                document.getElementById('contactForm').reset();
+                window.location.href = '@Url.Action("Index", "Home")';
+            });
+        });
+    </script>
+}
