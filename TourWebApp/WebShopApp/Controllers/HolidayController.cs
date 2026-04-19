@@ -48,6 +48,8 @@ namespace TourWebApp.Controllers
                 CategoryName = h.Category?.CategoryName ?? "General",
                 Picture = h.Picture,
                 Price = h.Price,
+                Quantity = h.Quantity, 
+                Description = h.Description, 
                 DepartureTime = h.DepartureTime,
                 ArrivalDate = h.ArrivalDate
             }).ToList();
@@ -163,6 +165,7 @@ namespace TourWebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Увери се, че моделът подава Quantity!
                 var updated = _holidayService.Update(
                     model.Id, model.HolidayName, model.CountryId, model.CategoryId,
                     model.Picture, model.Quantity, model.Price, model.Discount,
@@ -171,7 +174,7 @@ namespace TourWebApp.Controllers
                 if (updated) return RedirectToAction(nameof(Index));
             }
 
-            // Ако има грешка, презареждаме списъците
+            // Ако има грешка, презареждаме списъците, за да не гръмне View-то
             model.Countrys = _countryService.GetCountrys().Select(x => new CountryPairVM { Id = x.Id, Name = x.CountryName }).ToList();
             model.Categories = _categoryService.GetCategories().Select(x => new CategoryPairVM { Id = x.Id, Name = x.CategoryName }).ToList();
             return View(model);
@@ -207,17 +210,37 @@ namespace TourWebApp.Controllers
         [Authorize(Roles = "Administrator")]
         public ActionResult DeleteConfirmed(int id)
         {
-            var deleted = _holidayService.RemoveById(id);
-            if (deleted)
+            // 1. Проверяваме дали почивката изобщо съществува
+            var holiday = _holidayService.GetHolidayById(id);
+
+            if (holiday == null)
             {
-                return RedirectToAction(nameof(Index));
+                return NotFound();
             }
 
-            // Ако не успее да изтрие (например заради релации в базата), 
-            // по-добре ни върни в списъка или покажи грешка
+            // 2. Опитваме изтриване чрез сървиса
+            var deleted = _holidayService.RemoveById(id);
+
+            if (deleted)
+            {
+                // ТОВА ПРЕПРАЩА КЪМ Views/Holiday/Success.cshtml
+                return RedirectToAction(nameof(Success));
+            }
+
+            // 3. Ако изтриването се провали (напр. заради базата данни)
+            TempData["ErrorMessage"] = "Не може да изтриете почивка, за която има направени резервации.";
+
             return RedirectToAction(nameof(Index));
         }
 
-        // Останалите методи Edit, Delete трябва да се изчистят по същия начин от _context
+        // ДОБАВИ И ТОЗИ МЕТОД, ако го нямаш, за да се зареди вюто Success
+        [AllowAnonymous]
+        public IActionResult Success()
+        {
+            return View();
+        }
+        
+
+
     }
 }
