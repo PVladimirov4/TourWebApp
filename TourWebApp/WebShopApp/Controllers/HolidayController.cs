@@ -196,6 +196,8 @@ namespace TourWebApp.Controllers
                 HolidayName = holiday.HolidayName,
                 CountryName = holiday.Country?.CountryName ?? "Unknown",
                 CategoryName = holiday.Category?.CategoryName ?? "General",
+                Quantity = holiday.Quantity,
+                Discount = holiday.Discount,
                 Picture = holiday.Picture,
                 Price = holiday.Price,
                 
