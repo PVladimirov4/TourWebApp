@@ -220,7 +220,7 @@
                             bool isFavorite = favoriteIds.Contains(item.Id);
 
                             <form asp-controller="Favorite" asp-action="Toggle" asp-route-holidayId="@item.Id" method="post"
-                                  class="position-absolute" style="top: 55px; right: 15px; z-index: 10;">
+                                  class="position-absolute" style="top: 15px; right: 15px; z-index: 10;">
                                 <button type="submit" class="btn btn-light btn-sm rounded-circle shadow-sm d-flex align-items-center justify-content-center"
                                         style="width: 35px; height: 35px; border: none;">
                                     @if (isFavorite)
